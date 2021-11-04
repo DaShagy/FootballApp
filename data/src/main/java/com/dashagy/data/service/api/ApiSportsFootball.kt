@@ -8,5 +8,8 @@ import retrofit2.http.Query
 
 interface ApiSportsFootball {
     @GET("/teams")
-    fun getTeamById(@Query(value = "id") id: Int) : Call<ApiSportsBaseResponse<List<TeamVenueResponse>>>
+    fun getTeamById(@Query(value = "id") id: Int): Call<ApiSportsBaseResponse<List<TeamVenueResponse>>>
+
+    @GET("/teams")
+    fun getTeamByName(@Query(value = "name") name: String): Call<ApiSportsBaseResponse<List<TeamVenueResponse>>>
 }

@@ -31,7 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         val button = binding.button.apply {
             setOnClickListener {
-                teamsViewModel.getTeamById(1)
+                //teamsViewModel.getTeamById(1)
+                teamsViewModel.getTeamByName("Belgium")
             }
         }
     }

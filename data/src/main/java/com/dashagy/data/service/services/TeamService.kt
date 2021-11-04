@@ -27,4 +27,21 @@ class TeamService(context: Context) {
         }
         return ResultWrapper.Error(Exception(response.message()))
     }
+
+    fun getTeamByName(name: String): ResultWrapper<List<Team>> {
+        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamByName(name)
+        val response = callResponse.execute()
+        if (response.isSuccessful) {
+            response
+                .body()
+                ?.response
+                ?.map {
+                    mapper.transform(it)
+                }
+                ?.map {
+                    return ResultWrapper.Success(listOf(it))
+                }
+        }
+        return ResultWrapper.Error(Exception(response.message()))
+    }
 }
