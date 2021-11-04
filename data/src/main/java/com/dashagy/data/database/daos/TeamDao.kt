@@ -12,7 +12,7 @@ interface TeamDao {
     @Query("SELECT * FROM Teams")
     suspend fun getAllTeams() : List<RoomTeam>
 
-    @Query("SELECT * FROM Teams WHERE rowid = :id")
+    @Query("SELECT * FROM Teams WHERE id = :id")
     suspend fun getTeamById(id: Int) : List<RoomTeam>
 
     @Query("SELECT * FROM Teams WHERE name LIKE :name")
