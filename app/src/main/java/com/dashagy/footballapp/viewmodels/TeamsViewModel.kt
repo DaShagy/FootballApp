@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dashagy.domain.entities.Team
-import com.dashagy.domain.usecases.GetTeamByIdUseCase
+import com.dashagy.domain.usecases.team_usecases.GetTeamByIdUseCase
 import com.dashagy.domain.util.ResultWrapper
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

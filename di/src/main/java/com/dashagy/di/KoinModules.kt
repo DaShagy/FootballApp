@@ -6,7 +6,7 @@ import com.dashagy.data.repositories.TeamsRepositoryImpl
 import com.dashagy.data.service.RequestGenerator
 import com.dashagy.data.service.services.TeamService
 import com.dashagy.domain.repositories.TeamsRepository
-import com.dashagy.domain.usecases.GetTeamByIdUseCase
+import com.dashagy.domain.usecases.team_usecases.GetTeamByIdUseCase
 import org.koin.dsl.module
 
 object KoinModules {
