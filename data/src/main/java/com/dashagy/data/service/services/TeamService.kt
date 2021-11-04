@@ -74,4 +74,19 @@ class TeamService(context: Context) {
         }
         return ResultWrapper.Error(Exception(response.message()))
     }
+    fun getTeamBySearch(search: String): ResultWrapper<List<Team>> {
+        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamBySearch(search)
+        val response = callResponse.execute()
+        if (response.isSuccessful) {
+            return ResultWrapper.Success(
+                response
+                    .body()
+                    ?.response
+                    ?.map {
+                        mapper.transform(it)
+                    }!!
+            )
+        }
+        return ResultWrapper.Error(Exception(response.message()))
+    }
 }

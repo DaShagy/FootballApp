@@ -87,7 +87,19 @@ class TeamsRepositoryImpl(
     override suspend fun getTeamBySearch(
         search: String,
         fromRemote: Boolean,
-    ): ResultWrapper<List<Team>> {
-        TODO("Not yet implemented")
-    }
+    ): ResultWrapper<List<Team>> =
+        if (fromRemote){
+            val teamResult = service.getTeamBySearch(search)
+            if (teamResult is ResultWrapper.Success) {
+                val teams = teamResult.data.map { team -> mapper.transformToRepository(team) }
+                teams.map { dao.insertTeam(it) }
+            }
+            teamResult
+        } else {
+            ResultWrapper.Success(
+                dao.getTeamBySearch("%$search%").map{
+                    mapper.transform(it)
+                }
+            )
+        }
 }

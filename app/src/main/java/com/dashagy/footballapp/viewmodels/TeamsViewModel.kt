@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dashagy.domain.entities.Team
-import com.dashagy.domain.usecases.team_usecases.GetTeamByCountryUseCase
-import com.dashagy.domain.usecases.team_usecases.GetTeamByIdUseCase
-import com.dashagy.domain.usecases.team_usecases.GetTeamByLeagueUseCase
-import com.dashagy.domain.usecases.team_usecases.GetTeamByNameUseCase
+import com.dashagy.domain.usecases.team_usecases.*
 import com.dashagy.domain.util.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +16,7 @@ class TeamsViewModel(
     val getTeamByNameUseCase: GetTeamByNameUseCase,
     val getTeamByLeagueUseCase: GetTeamByLeagueUseCase,
     val getTeamByCountryUseCase: GetTeamByCountryUseCase,
+    val getTeamBySearchUseCase: GetTeamBySearchUseCase
 ) : ViewModel() {
 
     private var _teams: MutableLiveData<ResultWrapper<List<Team>>> = MutableLiveData()
@@ -49,6 +47,13 @@ class TeamsViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 _teams.postValue(getTeamByCountryUseCase(country, fromRemote))
+            }
+        }
+
+    fun getTeamBySearch(search: String, fromRemote: Boolean = false) =
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                _teams.postValue(getTeamBySearchUseCase(search, fromRemote))
             }
         }
 }
