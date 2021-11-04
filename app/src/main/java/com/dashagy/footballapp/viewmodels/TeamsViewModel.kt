@@ -22,35 +22,35 @@ class TeamsViewModel(
     fun getTeamById(id: Int, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeam.ByIdUseCase(id, fromRemote))
+                _teams.postValue(getTeam.byId(id, fromRemote))
             }
         }
 
     fun getTeamByName(name: String, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeam.ByNameUseCase(name, fromRemote))
+                _teams.postValue(getTeam.byName(name, fromRemote))
             }
         }
 
     fun getTeamByLeague(leagueId: Int, season: Int, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeam.ByLeagueUseCase(leagueId, season, fromRemote))
+                _teams.postValue(getTeam.byLeague(leagueId, season, fromRemote))
             }
         }
 
     fun getTeamByCountry(country: String, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeam.ByCountryUseCase(country, fromRemote))
+                _teams.postValue(getTeam.byCountry(country, fromRemote))
             }
         }
 
     fun getTeamBySearch(search: String, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeam.BySearchUseCase(search, fromRemote))
+                _teams.postValue(getTeam.bySearch(search, fromRemote))
             }
         }
 }

@@ -25,7 +25,7 @@ object KoinModules {
     }
 
     val useCasesModule = module {
-        single { GetTeamUseCases(get()) }
+        single { GetTeamUseCases(get(), get(), get(), get(), get()) }
     }
 
     val mappersModule = module {
