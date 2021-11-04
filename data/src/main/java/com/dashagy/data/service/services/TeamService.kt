@@ -58,4 +58,20 @@ class TeamService(context: Context) {
         }
         return ResultWrapper.Error(Exception(response.message()))
     }
+
+    fun getTeamByCountry(country: String): ResultWrapper<List<Team>> {
+        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamByCountry(country)
+        val response = callResponse.execute()
+        if (response.isSuccessful) {
+            return ResultWrapper.Success(
+                response
+                    .body()
+                    ?.response
+                    ?.map {
+                        mapper.transform(it)
+                    }!!
+            )
+        }
+        return ResultWrapper.Error(Exception(response.message()))
+    }
 }

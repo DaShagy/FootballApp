@@ -18,4 +18,7 @@ interface ApiSportsFootball {
         @Query(value = "league") leagueId: Int,
         @Query(value = "season") season: Int
     ): Call<ApiSportsBaseResponse<List<TeamVenueResponse>>>
+
+    @GET("/teams")
+    fun getTeamByCountry(@Query(value = "country") country: String): Call<ApiSportsBaseResponse<List<TeamVenueResponse>>>
 }

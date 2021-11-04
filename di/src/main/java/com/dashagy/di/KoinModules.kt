@@ -6,6 +6,7 @@ import com.dashagy.data.repositories.TeamsRepositoryImpl
 import com.dashagy.data.service.RequestGenerator
 import com.dashagy.data.service.services.TeamService
 import com.dashagy.domain.repositories.TeamsRepository
+import com.dashagy.domain.usecases.team_usecases.GetTeamByCountryUseCase
 import com.dashagy.domain.usecases.team_usecases.GetTeamByIdUseCase
 import com.dashagy.domain.usecases.team_usecases.GetTeamByLeagueUseCase
 import com.dashagy.domain.usecases.team_usecases.GetTeamByNameUseCase
@@ -21,6 +22,7 @@ object KoinModules {
         single { GetTeamByIdUseCase(get()) }
         single { GetTeamByNameUseCase(get()) }
         single { GetTeamByLeagueUseCase(get()) }
+        single { GetTeamByCountryUseCase(get()) }
     }
 
     val mappersModule = module {

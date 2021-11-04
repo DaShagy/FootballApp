@@ -27,7 +27,7 @@ object AppKoinModules {
 
 
     val viewModelsModule = module {
-        viewModel { TeamsViewModel(get(), get(), get()) }
+        viewModel { TeamsViewModel(get(), get(), get(), get()) }
     }
 }
 

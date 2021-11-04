@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dashagy.domain.entities.Team
+import com.dashagy.domain.usecases.team_usecases.GetTeamByCountryUseCase
 import com.dashagy.domain.usecases.team_usecases.GetTeamByIdUseCase
 import com.dashagy.domain.usecases.team_usecases.GetTeamByLeagueUseCase
 import com.dashagy.domain.usecases.team_usecases.GetTeamByNameUseCase
@@ -17,6 +18,7 @@ class TeamsViewModel(
     val getTeamByIdUseCase: GetTeamByIdUseCase,
     val getTeamByNameUseCase: GetTeamByNameUseCase,
     val getTeamByLeagueUseCase: GetTeamByLeagueUseCase,
+    val getTeamByCountryUseCase: GetTeamByCountryUseCase,
 ) : ViewModel() {
 
     private var _teams: MutableLiveData<ResultWrapper<List<Team>>> = MutableLiveData()
@@ -40,6 +42,13 @@ class TeamsViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO){
                 _teams.postValue(getTeamByLeagueUseCase(leagueId, season, fromRemote))
+            }
+        }
+
+    fun getTeamByCountry(country: String, fromRemote: Boolean = false) =
+        viewModelScope.launch {
+            withContext(Dispatchers.IO){
+                _teams.postValue(getTeamByCountryUseCase(country, fromRemote))
             }
         }
 }

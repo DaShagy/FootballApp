@@ -72,9 +72,17 @@ class TeamsRepositoryImpl(
     override suspend fun getTeamByCountry(
         country: String,
         fromRemote: Boolean,
-    ): ResultWrapper<List<Team>> {
-        TODO("Not yet implemented")
-    }
+    ): ResultWrapper<List<Team>> =
+        if (fromRemote){
+            val teamResult = service.getTeamByCountry(country)
+            if (teamResult is ResultWrapper.Success) {
+                val teams = teamResult.data.map { team -> mapper.transformToRepository(team) }
+                teams.map { dao.insertTeam(it) }
+            }
+            teamResult
+        } else {
+            TODO("Search by country locale not implemented yet")
+        }
 
     override suspend fun getTeamBySearch(
         search: String,
