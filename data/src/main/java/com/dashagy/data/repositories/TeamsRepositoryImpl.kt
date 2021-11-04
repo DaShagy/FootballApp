@@ -61,9 +61,8 @@ class TeamsRepositoryImpl(
         if (fromRemote){
             val teamResult = service.getTeamByLeague(leagueId, season)
             if (teamResult is ResultWrapper.Success) {
-                teamResult.data.map {
-                        team -> mapper.transformToRepository(team).also { dao.insertTeam(it) }
-                }
+                val teams = teamResult.data.map { team -> mapper.transformToRepository(team) }
+                teams.map { dao.insertTeam(it) }
             }
             teamResult
         } else {

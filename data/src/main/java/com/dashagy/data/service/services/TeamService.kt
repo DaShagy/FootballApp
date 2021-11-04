@@ -15,15 +15,14 @@ class TeamService(context: Context) {
         val callResponse = api.createService(ApiSportsFootball::class.java).getTeamById(id)
         val response = callResponse.execute()
         if (response.isSuccessful) {
-            response
-                .body()
-                ?.response
-                ?.map {
-                    mapper.transform(it)
-                }
-                ?.map {
-                    return ResultWrapper.Success(listOf(it))
-                }
+            return ResultWrapper.Success(
+                response
+                    .body()
+                    ?.response
+                    ?.map {
+                        mapper.transform(it)
+                    }!!
+            )
         }
         return ResultWrapper.Error(Exception(response.message()))
     }
@@ -32,15 +31,14 @@ class TeamService(context: Context) {
         val callResponse = api.createService(ApiSportsFootball::class.java).getTeamByName(name)
         val response = callResponse.execute()
         if (response.isSuccessful) {
-            response
-                .body()
-                ?.response
-                ?.map {
-                    mapper.transform(it)
-                }
-                ?.map {
-                    return ResultWrapper.Success(listOf(it))
-                }
+            return ResultWrapper.Success(
+                response
+                    .body()
+                    ?.response
+                    ?.map {
+                        mapper.transform(it)
+                    }!!
+            )
         }
         return ResultWrapper.Error(Exception(response.message()))
     }
@@ -49,15 +47,14 @@ class TeamService(context: Context) {
         val callResponse = api.createService(ApiSportsFootball::class.java).getTeamByLeague(leagueId, season)
         val response = callResponse.execute()
         if (response.isSuccessful) {
-            response
-                .body()
-                ?.response
-                ?.map {
-                    mapper.transform(it)
-                }
-                ?.map {
-                    return ResultWrapper.Success(listOf(it))
-                }
+            return ResultWrapper.Success(
+                response
+                    .body()
+                    ?.response
+                    ?.map {
+                        mapper.transform(it)
+                    }!!
+            )
         }
         return ResultWrapper.Error(Exception(response.message()))
     }
