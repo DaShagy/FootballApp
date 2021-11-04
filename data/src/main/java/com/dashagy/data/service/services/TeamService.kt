@@ -12,7 +12,8 @@ class TeamService(context: Context) {
     private val mapper: TeamMapperService = TeamMapperService()
 
     fun getTeamById(id: Int): ResultWrapper<List<Team>> {
-        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamById(id)
+        val callResponse = api.createService(ApiSportsFootball.FootballTeams::class.java)
+            .getTeamById(id)
         val response = callResponse.execute()
         if (response.isSuccessful) {
             return ResultWrapper.Success(
@@ -28,7 +29,8 @@ class TeamService(context: Context) {
     }
 
     fun getTeamByName(name: String): ResultWrapper<List<Team>> {
-        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamByName(name)
+        val callResponse = api.createService(ApiSportsFootball.FootballTeams::class.java)
+            .getTeamByName(name)
         val response = callResponse.execute()
         if (response.isSuccessful) {
             return ResultWrapper.Success(
@@ -44,7 +46,8 @@ class TeamService(context: Context) {
     }
 
     fun getTeamByLeague(leagueId: Int, season: Int): ResultWrapper<List<Team>> {
-        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamByLeague(leagueId, season)
+        val callResponse = api.createService(ApiSportsFootball.FootballTeams::class.java)
+            .getTeamByLeague(leagueId, season)
         val response = callResponse.execute()
         if (response.isSuccessful) {
             return ResultWrapper.Success(
@@ -60,7 +63,8 @@ class TeamService(context: Context) {
     }
 
     fun getTeamByCountry(country: String): ResultWrapper<List<Team>> {
-        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamByCountry(country)
+        val callResponse = api.createService(ApiSportsFootball.FootballTeams::class.java)
+            .getTeamByCountry(country)
         val response = callResponse.execute()
         if (response.isSuccessful) {
             return ResultWrapper.Success(
@@ -75,7 +79,8 @@ class TeamService(context: Context) {
         return ResultWrapper.Error(Exception(response.message()))
     }
     fun getTeamBySearch(search: String): ResultWrapper<List<Team>> {
-        val callResponse = api.createService(ApiSportsFootball::class.java).getTeamBySearch(search)
+        val callResponse = api.createService(ApiSportsFootball.FootballTeams::class.java)
+            .getTeamBySearch(search)
         val response = callResponse.execute()
         if (response.isSuccessful) {
             return ResultWrapper.Success(

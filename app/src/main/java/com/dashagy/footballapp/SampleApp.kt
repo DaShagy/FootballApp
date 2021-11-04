@@ -21,6 +21,7 @@ class SampleApp : Application() {
                 KoinModules.repositoriesModule,
                 KoinModules.useCasesModule,
                 KoinModules.teamUseCasesModule,
+                KoinModules.playerUseCasesModule,
                 KoinModules.requestGeneratorModule
             ))
         }
