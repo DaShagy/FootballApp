@@ -55,17 +55,20 @@ class TeamsRepositoryImpl(
 
     override suspend fun getTeamByLeague(
         leagueId: Int,
-        fromRemote: Boolean,
-    ): ResultWrapper<List<Team>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getTeamBySeason(
         season: Int,
         fromRemote: Boolean,
-    ): ResultWrapper<List<Team>> {
-        TODO("Not yet implemented")
-    }
+    ): ResultWrapper<List<Team>> =
+        if (fromRemote){
+            val teamResult = service.getTeamByLeague(leagueId, season)
+            if (teamResult is ResultWrapper.Success) {
+                teamResult.data.map {
+                        team -> mapper.transformToRepository(team).also { dao.insertTeam(it) }
+                }
+            }
+            teamResult
+        } else {
+            TODO("Search by league locale not implemented yet")
+        }
 
     override suspend fun getTeamByCountry(
         country: String,

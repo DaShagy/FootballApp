@@ -16,9 +16,8 @@ interface TeamDao {
     suspend fun getTeamById(id: Int) : List<RoomTeam>
 
     @Query("SELECT * FROM Teams WHERE name LIKE :name")
-    fun getTeamByName(name: String): List<RoomTeam>
+    suspend fun getTeamByName(name: String): List<RoomTeam>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTeam(team: RoomTeam)
-
 }

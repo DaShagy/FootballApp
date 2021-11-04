@@ -12,4 +12,10 @@ interface ApiSportsFootball {
 
     @GET("/teams")
     fun getTeamByName(@Query(value = "name") name: String): Call<ApiSportsBaseResponse<List<TeamVenueResponse>>>
+
+    @GET("/teams")
+    fun getTeamByLeague(
+        @Query(value = "league") leagueId: Int,
+        @Query(value = "season") season: Int
+    ): Call<ApiSportsBaseResponse<List<TeamVenueResponse>>>
 }
