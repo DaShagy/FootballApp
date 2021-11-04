@@ -6,6 +6,7 @@ import com.dashagy.data.repositories.TeamsRepositoryImpl
 import com.dashagy.data.service.RequestGenerator
 import com.dashagy.data.service.services.TeamService
 import com.dashagy.domain.repositories.TeamsRepository
+import com.dashagy.domain.usecases.GetTeamUseCases
 import com.dashagy.domain.usecases.team_usecases.*
 import org.koin.dsl.module
 
@@ -15,12 +16,16 @@ object KoinModules {
         single<TeamsRepository> { TeamsRepositoryImpl(get(), get(), get()) }
     }
 
-    val useCasesModule = module {
+    val teamUseCasesModule = module {
         single { GetTeamByIdUseCase(get()) }
         single { GetTeamByNameUseCase(get()) }
         single { GetTeamByLeagueUseCase(get()) }
         single { GetTeamByCountryUseCase(get()) }
         single { GetTeamBySearchUseCase(get()) }
+    }
+
+    val useCasesModule = module {
+        single { GetTeamUseCases(get()) }
     }
 
     val mappersModule = module {

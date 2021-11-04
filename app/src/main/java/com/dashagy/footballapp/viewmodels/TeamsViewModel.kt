@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dashagy.domain.entities.Team
+import com.dashagy.domain.usecases.GetTeamUseCases
 import com.dashagy.domain.usecases.team_usecases.*
 import com.dashagy.domain.util.ResultWrapper
 import kotlinx.coroutines.Dispatchers
@@ -12,11 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TeamsViewModel(
-    val getTeamByIdUseCase: GetTeamByIdUseCase,
-    val getTeamByNameUseCase: GetTeamByNameUseCase,
-    val getTeamByLeagueUseCase: GetTeamByLeagueUseCase,
-    val getTeamByCountryUseCase: GetTeamByCountryUseCase,
-    val getTeamBySearchUseCase: GetTeamBySearchUseCase
+    private val getTeam: GetTeamUseCases
 ) : ViewModel() {
 
     private var _teams: MutableLiveData<ResultWrapper<List<Team>>> = MutableLiveData()
@@ -25,35 +22,35 @@ class TeamsViewModel(
     fun getTeamById(id: Int, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeamByIdUseCase(id, fromRemote))
+                _teams.postValue(getTeam.ByIdUseCase(id, fromRemote))
             }
         }
 
     fun getTeamByName(name: String, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeamByNameUseCase(name, fromRemote))
+                _teams.postValue(getTeam.ByNameUseCase(name, fromRemote))
             }
         }
 
     fun getTeamByLeague(leagueId: Int, season: Int, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeamByLeagueUseCase(leagueId, season, fromRemote))
+                _teams.postValue(getTeam.ByLeagueUseCase(leagueId, season, fromRemote))
             }
         }
 
     fun getTeamByCountry(country: String, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeamByCountryUseCase(country, fromRemote))
+                _teams.postValue(getTeam.ByCountryUseCase(country, fromRemote))
             }
         }
 
     fun getTeamBySearch(search: String, fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeamBySearchUseCase(search, fromRemote))
+                _teams.postValue(getTeam.BySearchUseCase(search, fromRemote))
             }
         }
 }

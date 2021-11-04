@@ -20,6 +20,7 @@ class SampleApp : Application() {
                 KoinModules.mappersModule,
                 KoinModules.repositoriesModule,
                 KoinModules.useCasesModule,
+                KoinModules.teamUseCasesModule,
                 KoinModules.requestGeneratorModule
             ))
         }
