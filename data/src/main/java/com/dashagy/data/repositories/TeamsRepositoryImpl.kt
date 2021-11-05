@@ -66,13 +66,17 @@ class TeamsRepositoryImpl(
             return teamResult
         } else {
             when (queryType){
-                is TeamQueryType.Country -> TODO("Search by country locale not implemented yet")
+                is TeamQueryType.Country -> {
+                    teamResult = ResultWrapper.Success(
+                        dao.getTeamByCountry(queryType.country).map { mapper.transform(it) }
+                    )
+                }
                 is TeamQueryType.Id -> {
                     teamResult = ResultWrapper.Success(
                         dao.getTeamById(queryType.id).map { mapper.transform(it) }
                     )
                 }
-                is TeamQueryType.League -> TODO("Search by league locale not implemented yet")
+                is TeamQueryType.League -> TODO("Search by league locale not implemented yet. Need a league reference in locale db")
                 is TeamQueryType.Name -> {
                     teamResult = ResultWrapper.Success(
                         dao.getTeamByName(queryType.name).map{ mapper.transform(it) }
