@@ -42,23 +42,7 @@ class TeamsRepositoryImpl(
     private suspend fun getTeam (queryType: TeamQueryType, fromRemote: Boolean): ResultWrapper<List<Team>> {
         val teamResult : ResultWrapper<List<Team>>
         if (fromRemote) {
-            when (queryType) {
-                is TeamQueryType.Country -> {
-                    teamResult = service.getTeamByCountry(queryType.country)
-                }
-                is TeamQueryType.Id -> {
-                    teamResult = service.getTeamById(queryType.id)
-                }
-                is TeamQueryType.League -> {
-                    teamResult = service.getTeamByLeague(queryType.leagueId, queryType.season)
-                }
-                is TeamQueryType.Name -> {
-                    teamResult = service.getTeamByName(queryType.name)
-                }
-                is TeamQueryType.Search -> {
-                    teamResult = service.getTeamBySearch(queryType.search)
-                }
-            }
+            teamResult = service.getTeam(queryType)
             if (teamResult is ResultWrapper.Success) {
                 val teams = teamResult.data.map { team -> mapper.transformToRepository(team) }
                 teams.map { dao.insertTeam(it) }
