@@ -2,6 +2,7 @@ package com.dashagy.data.service.api
 
 import com.dashagy.data.service.responses.ApiSportsBaseResponse
 import com.dashagy.data.service.responses.PlayerBaseResponse
+import com.dashagy.data.service.responses.SquadPlayerBaseResponse
 import com.dashagy.data.service.responses.TeamBaseResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -50,6 +51,11 @@ interface ApiSportsFootball {
             @Query(value = "season") season: Int,
             @Query(value = "page") page: Int = 1
         ): Call<ApiSportsBaseResponse<List<PlayerBaseResponse>>>
+
+        @GET("/players/squads")
+        fun getSquadPlayersByTeam(
+            @Query(value = "team") teamId: Int
+        ): Call<ApiSportsBaseResponse<List<SquadPlayerBaseResponse>>>
     }
 
 }

@@ -7,10 +7,12 @@ import com.dashagy.data.mapper.TeamMapperLocal
 import com.dashagy.data.repositories.TeamsRepositoryImpl
 import com.dashagy.data.service.services.TeamService
 import com.dashagy.domain.entities.Player
+import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.entities.Team
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.databinding.ActivityMainBinding
 import com.dashagy.footballapp.viewmodels.PlayersViewModel
+import com.dashagy.footballapp.viewmodels.SquadPlayersViewModel
 import com.dashagy.footballapp.viewmodels.TeamsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -18,8 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private val teamsViewModel by viewModel<TeamsViewModel>()
     private val playersViewModel by viewModel<PlayersViewModel>()
-
-    private val database by lazy { AppDatabase.getDatabase(this) }
+    private val squadPlayersViewModel by viewModel<SquadPlayersViewModel>()
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -31,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //teamsViewModel.teams.observe(this, ::updateTeams)
-        playersViewModel.players.observe(this, ::updatePlayers)
+        //playersViewModel.players.observe(this, ::updatePlayers)
+        squadPlayersViewModel.players.observe(this, ::updateSquadPlayers)
 
         val button = binding.button.apply {
             setOnClickListener {
@@ -42,17 +44,26 @@ class MainActivity : AppCompatActivity() {
                 //teamsViewModel.getTeamBySearch("che")
 
                 //playersViewModel.getPlayerById(276, 2020,true)
-                playersViewModel.getPlayerByTeam(33, 2020, true)
+                //playersViewModel.getPlayerByTeam(33, 2020, true)
+
+                squadPlayersViewModel.getSquadPlayerByTeam(455,true)
             }
         }
     }
 
-    private fun updatePlayers(resultWrapper: ResultWrapper<List<Player>>) {
+    private fun updateSquadPlayers(resultWrapper: ResultWrapper<List<SquadPlayer>>?) {
         when(resultWrapper){
             is ResultWrapper.Error -> binding.textView.text = "ERROR"
             is ResultWrapper.Success -> binding.textView.text = resultWrapper.data.toString()
         }
     }
+
+    /*private fun updatePlayers(resultWrapper: ResultWrapper<List<Player>>) {
+        when(resultWrapper){
+            is ResultWrapper.Error -> binding.textView.text = "ERROR"
+            is ResultWrapper.Success -> binding.textView.text = resultWrapper.data.toString()
+        }
+    }*/
 
     /*private fun updateTeams(resultWrapper: ResultWrapper<List<Team>>) {
         when(resultWrapper){

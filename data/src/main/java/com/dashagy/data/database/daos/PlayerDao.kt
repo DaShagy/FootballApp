@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.dashagy.data.database.entities.RoomPlayer
+import com.dashagy.data.database.entities.RoomSquadPlayer
 
 @Dao
 interface PlayerDao {
@@ -17,4 +18,7 @@ interface PlayerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlayer(player: RoomPlayer)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSquadPlayer(player: RoomSquadPlayer)
 }

@@ -6,6 +6,7 @@ import com.dashagy.data.database.AppDatabase
 import com.dashagy.data.database.daos.PlayerDao
 import com.dashagy.data.database.daos.TeamDao
 import com.dashagy.footballapp.viewmodels.PlayersViewModel
+import com.dashagy.footballapp.viewmodels.SquadPlayersViewModel
 import com.dashagy.footballapp.viewmodels.TeamsViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -32,6 +33,7 @@ object AppKoinModules {
     val viewModelsModule = module {
         viewModel { TeamsViewModel(get()) }
         viewModel { PlayersViewModel(get(), get()) }
+        viewModel { SquadPlayersViewModel(get()) }
     }
 }
 

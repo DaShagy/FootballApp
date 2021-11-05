@@ -1,9 +1,6 @@
 package com.dashagy.di
 
-import com.dashagy.data.mapper.PlayerMapperLocal
-import com.dashagy.data.mapper.PlayerMapperService
-import com.dashagy.data.mapper.TeamMapperLocal
-import com.dashagy.data.mapper.TeamMapperService
+import com.dashagy.data.mapper.*
 import com.dashagy.data.repositories.PlayersRepositoryImpl
 import com.dashagy.data.repositories.TeamsRepositoryImpl
 import com.dashagy.data.service.RequestGenerator
@@ -14,6 +11,7 @@ import com.dashagy.domain.repositories.TeamsRepository
 import com.dashagy.domain.usecases.GetTeamUseCases
 import com.dashagy.domain.usecases.player_usecases.GetPlayerByIdUseCase
 import com.dashagy.domain.usecases.player_usecases.GetPlayerByTeamUseCase
+import com.dashagy.domain.usecases.player_usecases.GetSquadPlayersByTeamUseCase
 import com.dashagy.domain.usecases.team_usecases.*
 import org.koin.dsl.module
 
@@ -22,7 +20,7 @@ object KoinModules {
         single { TeamService(get()) }
         single { PlayerService(get()) }
         single<TeamsRepository> { TeamsRepositoryImpl(get(), get(), get()) }
-        single<PlayersRepository> { PlayersRepositoryImpl(get(), get(), get()) }
+        single<PlayersRepository> { PlayersRepositoryImpl(get(), get(), get(), get()) }
     }
 
     val teamUseCasesModule = module {
@@ -36,6 +34,7 @@ object KoinModules {
     val playerUseCasesModule = module {
         single { GetPlayerByIdUseCase(get()) }
         single { GetPlayerByTeamUseCase(get()) }
+        single { GetSquadPlayersByTeamUseCase(get()) }
     }
 
     val useCasesModule = module {
@@ -47,6 +46,8 @@ object KoinModules {
         single { TeamMapperService() }
         single { PlayerMapperLocal() }
         single { PlayerMapperService() }
+        single { SquadPlayerMapperLocal() }
+        single { SquadPlayerMapperService() }
     }
 
     val requestGeneratorModule = module{

@@ -7,12 +7,14 @@ import androidx.room.RoomDatabase
 import com.dashagy.data.database.daos.PlayerDao
 import com.dashagy.data.database.daos.TeamDao
 import com.dashagy.data.database.entities.RoomPlayer
+import com.dashagy.data.database.entities.RoomSquadPlayer
 import com.dashagy.data.database.entities.RoomTeam
 
 @Database(
     entities = [
         RoomTeam::class,
-        RoomPlayer::class
+        RoomPlayer::class,
+        RoomSquadPlayer::class,
                ],
     version = 1
 )

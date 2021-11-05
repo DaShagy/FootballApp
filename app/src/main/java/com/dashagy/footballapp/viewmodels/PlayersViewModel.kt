@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dashagy.domain.entities.Player
+import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.usecases.player_usecases.GetPlayerByIdUseCase
 import com.dashagy.domain.usecases.player_usecases.GetPlayerByTeamUseCase
 import com.dashagy.domain.util.ResultWrapper
@@ -14,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 class PlayersViewModel(
     private val getPlayerByIdUseCase: GetPlayerByIdUseCase,
-    private val getPlayerByTeamUseCase: GetPlayerByTeamUseCase
+    private val getPlayerByTeamUseCase: GetPlayerByTeamUseCase,
 ) : ViewModel() {
 
     private var _players: MutableLiveData<ResultWrapper<List<Player>>> = MutableLiveData()
