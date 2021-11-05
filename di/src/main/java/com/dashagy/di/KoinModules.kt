@@ -13,6 +13,7 @@ import com.dashagy.domain.repositories.PlayersRepository
 import com.dashagy.domain.repositories.TeamsRepository
 import com.dashagy.domain.usecases.GetTeamUseCases
 import com.dashagy.domain.usecases.player_usecases.GetPlayerByIdUseCase
+import com.dashagy.domain.usecases.player_usecases.GetPlayerByTeamUseCase
 import com.dashagy.domain.usecases.team_usecases.*
 import org.koin.dsl.module
 
@@ -34,6 +35,7 @@ object KoinModules {
 
     val playerUseCasesModule = module {
         single { GetPlayerByIdUseCase(get()) }
+        single { GetPlayerByTeamUseCase(get()) }
     }
 
     val useCasesModule = module {

@@ -14,7 +14,11 @@ class PlayersRepositoryImpl(
     private val service: PlayerService
 ) : PlayersRepository {
 
-    override suspend fun getPlayerById(id: Int, season: Int, fromRemote: Boolean): ResultWrapper<List<Player>> =
+    override suspend fun getPlayerById(
+        id: Int,
+        season: Int,
+        fromRemote: Boolean
+    ): ResultWrapper<List<Player>> =
         if (fromRemote){
             val playerResult = service.getPlayerById(id, season)
             if (playerResult is ResultWrapper.Success){
@@ -28,6 +32,22 @@ class PlayersRepositoryImpl(
                     mapper.transform(it)
                 }
             )
+        }
+
+    override suspend fun getPlayerByTeam(
+        teamId: Int,
+        season: Int,
+        fromRemote: Boolean,
+    ): ResultWrapper<List<Player>> =
+        if (fromRemote){
+            val playerResult = service.getPlayerByTeam(teamId, season)
+            if (playerResult is ResultWrapper.Success){
+                val teams = playerResult.data.map { team -> mapper.transformToRepository(team) }
+                teams.map { dao.insertPlayer(it) }
+            }
+            playerResult
+        } else {
+            TODO("getPlayerByTeam locale")
         }
 
 }

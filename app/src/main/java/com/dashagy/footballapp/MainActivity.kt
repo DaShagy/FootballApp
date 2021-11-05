@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
                 //teamsViewModel.getTeamByCountry("Argentina", true)
                 //teamsViewModel.getTeamBySearch("che")
 
-                playersViewModel.getPlayerById(276, 2020,true)
+                //playersViewModel.getPlayerById(276, 2020,true)
+                playersViewModel.getPlayerByTeam(39, 2020, true)
             }
         }
     }

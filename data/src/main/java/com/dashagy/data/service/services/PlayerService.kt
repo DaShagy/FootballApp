@@ -27,4 +27,21 @@ class PlayerService(context: Context) {
         }
         return ResultWrapper.Error(Exception(response.message()))
     }
+
+    fun getPlayerByTeam(teamId: Int, season: Int): ResultWrapper<List<Player>> {
+        val callResponse = api.createService(ApiSportsFootball.FootballPlayers::class.java)
+            .getPlayerByTeam(teamId, season)
+        val response = callResponse.execute()
+        if (response.isSuccessful) {
+            return ResultWrapper.Success(
+                response
+                    .body()
+                    ?.response
+                    ?.map {
+                        mapper.transform(it)
+                    }!!
+            )
+        }
+        return ResultWrapper.Error(Exception(response.message()))
+    }
 }

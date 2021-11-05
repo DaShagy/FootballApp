@@ -11,10 +11,14 @@ interface ApiSportsFootball {
 
     interface FootballTeams {
         @GET("/teams")
-        fun getTeamById(@Query(value = "id") id: Int): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
+        fun getTeamById(
+            @Query(value = "id") id: Int
+        ): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
 
         @GET("/teams")
-        fun getTeamByName(@Query(value = "name") name: String): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
+        fun getTeamByName(
+            @Query(value = "name") name: String
+        ): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
 
         @GET("/teams")
         fun getTeamByLeague(
@@ -23,10 +27,14 @@ interface ApiSportsFootball {
         ): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
 
         @GET("/teams")
-        fun getTeamByCountry(@Query(value = "country") country: String): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
+        fun getTeamByCountry(
+            @Query(value = "country") country: String
+        ): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
 
         @GET("/teams")
-        fun getTeamBySearch(@Query(value = "search") search: String): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
+        fun getTeamBySearch(
+            @Query(value = "search") search: String
+        ): Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
     }
 
     interface FootballPlayers{
@@ -34,6 +42,12 @@ interface ApiSportsFootball {
         fun getPlayerById(
             @Query(value = "id") id: Int,
             @Query(value = "season") season: Int,
+        ): Call<ApiSportsBaseResponse<List<PlayerBaseResponse>>>
+
+        @GET("/players")
+        fun getPlayerByTeam(
+            @Query(value = "team") teamId: Int,
+            @Query(value = "season") season: Int
         ): Call<ApiSportsBaseResponse<List<PlayerBaseResponse>>>
     }
 
