@@ -15,5 +15,6 @@ data class RoomPlayer(
     val height: String?,
     val weight: String?,
     val injured: Boolean,
-    val photo: String
+    val photo: String,
+    val currentTeam: String?
 )

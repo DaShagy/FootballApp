@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
                 //teamsViewModel.getTeamBySearch("che")
 
                 //playersViewModel.getPlayerById(276, 2020,true)
-                playersViewModel.getPlayerByTeam(39, 2020, true)
+                playersViewModel.getPlayerByTeam(33, 2020, true)
             }
         }
     }

@@ -5,7 +5,20 @@ import com.dashagy.data.service.responses.PlayerBaseResponse
 import com.dashagy.domain.entities.*
 
 class PlayerMapperService : BaseMapperRepository<PlayerBaseResponse, Player> {
-    override fun transform(type: PlayerBaseResponse): Player = type.player
+    override fun transform(type: PlayerBaseResponse): Player =
+        Player(
+            id = type.player.id,
+            name = type.player.name,
+            firstname = type.player.firstname,
+            lastname = type.player.lastname,
+            age = type.player.age,
+            nationality = type.player.nationality,
+            height = type.player.height,
+            weight = type.player.weight,
+            injured = type.player.injured,
+            photo = type.player.photo,
+            currentTeam = type.statistics[0].team.name
+        )
 
     override fun transformToRepository(type: Player): PlayerBaseResponse =
         PlayerBaseResponse(

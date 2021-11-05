@@ -15,7 +15,8 @@ class PlayerMapperLocal : BaseMapperRepository<RoomPlayer, Player> {
             height = type.height,
             weight = type.weight,
             injured = type.injured,
-            photo = type.photo
+            photo = type.photo,
+            currentTeam = type.currentTeam
         )
 
     override fun transformToRepository(type: Player): RoomPlayer =
@@ -29,6 +30,7 @@ class PlayerMapperLocal : BaseMapperRepository<RoomPlayer, Player> {
             height = type.height,
             weight = type.weight,
             injured = type.injured,
-            photo = type.photo
+            photo = type.photo,
+            currentTeam = type.currentTeam
         )
 }
