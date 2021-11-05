@@ -7,8 +7,8 @@ data class Player(
     val lastname: String,
     val age: Int,
     val nationality: String,
-    val height: String,
-    val weight: String,
+    val height: String?,
+    val weight: String?,
     val injured: Boolean,
     val photo: String
 )
