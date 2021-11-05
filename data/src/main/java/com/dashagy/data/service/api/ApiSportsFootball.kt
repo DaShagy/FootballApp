@@ -47,7 +47,8 @@ interface ApiSportsFootball {
         @GET("/players")
         fun getPlayerByTeam(
             @Query(value = "team") teamId: Int,
-            @Query(value = "season") season: Int
+            @Query(value = "season") season: Int,
+            @Query(value = "page") page: Int = 1
         ): Call<ApiSportsBaseResponse<List<PlayerBaseResponse>>>
     }
 
