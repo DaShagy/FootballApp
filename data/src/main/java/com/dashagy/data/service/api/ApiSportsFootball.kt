@@ -36,4 +36,5 @@ interface ApiSportsFootball {
             @Query(value = "season") season: Int,
         ): Call<ApiSportsBaseResponse<List<PlayerBaseResponse>>>
     }
+
 }

@@ -15,6 +15,9 @@ interface TeamDao {
     @Query("SELECT * FROM Teams WHERE id = :id")
     suspend fun getTeamById(id: Int) : List<RoomTeam>
 
+    @Query("SELECT * FROM Teams WHERE country = :country")
+    suspend fun getTeamByCountry(country: String) : List<RoomTeam>
+
     @Query("SELECT * FROM Teams WHERE name LIKE :name")
     suspend fun getTeamByName(name: String): List<RoomTeam>
 
