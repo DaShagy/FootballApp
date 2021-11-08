@@ -20,7 +20,15 @@ class CountriesViewModel(
     fun getAllCountries(fromRemote: Boolean = false) =
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                _countries.postValue(getAllCountriesUseCase(fromRemote))
+                val countries = getAllCountriesUseCase(fromRemote)
+                val result = if (countries is ResultWrapper.Success){
+                    ResultWrapper.Success(
+                        countries.data.filterNotNull()
+                    )
+                } else {
+                    ResultWrapper.Error(Exception("Un error ha ocurrido"))
+                }
+                _countries.postValue(result)
             }
         }
 }
