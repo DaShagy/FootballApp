@@ -1,9 +1,6 @@
 package com.dashagy.data.service.api
 
-import com.dashagy.data.service.responses.ApiSportsBaseResponse
-import com.dashagy.data.service.responses.PlayerBaseResponse
-import com.dashagy.data.service.responses.SquadPlayerBaseResponse
-import com.dashagy.data.service.responses.TeamBaseResponse
+import com.dashagy.data.service.responses.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -58,4 +55,8 @@ interface ApiSportsFootball {
         ): Call<ApiSportsBaseResponse<List<SquadPlayerBaseResponse>>>
     }
 
+    interface Countries{
+        @GET("/countries")
+        fun getAllCountries(): Call<ApiSportsBaseResponse<List<CountryResponse>>>
+    }
 }
