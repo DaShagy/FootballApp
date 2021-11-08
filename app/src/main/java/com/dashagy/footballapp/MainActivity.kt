@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
                 //squadPlayersViewModel.getSquadPlayerByTeam(455,true)
 
-                countriesViewModel.getAllCountries(true)
+                countriesViewModel.getAllCountries()
             }
         }
     }

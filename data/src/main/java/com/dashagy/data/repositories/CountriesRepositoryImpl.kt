@@ -13,16 +13,20 @@ class CountriesRepositoryImpl(
     private val dao: CountryDao
 ) : CountriesRepository {
     override suspend fun getAllCountries(fromRemote: Boolean): ResultWrapper<List<Country>> {
-        if (fromRemote){
+        return if (fromRemote){
             val countriesResult = service.getAllCountries()
             if (countriesResult is ResultWrapper.Success){
                 countriesResult.data.map {
                     dao.insertCountry(mapper.transformToRepository(it))
                 }
             }
-            return countriesResult
+            countriesResult
         } else {
-            TODO("Get All countries from locale not implemented yet")
+            ResultWrapper.Success(
+                dao.getAllCountries().map{
+                    mapper.transform(it)
+                }
+            )
         }
     }
 }
