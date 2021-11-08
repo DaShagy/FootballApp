@@ -26,7 +26,7 @@ object KoinModules {
         single { CountryService(get()) }
         single<TeamsRepository> { TeamsRepositoryImpl(get(), get(), get()) }
         single<PlayersRepository> { PlayersRepositoryImpl(get(), get(), get(), get()) }
-        single<CountriesRepository> { CountriesRepositoryImpl(get()) }
+        single<CountriesRepository> { CountriesRepositoryImpl(get(), get(), get()) }
     }
 
     val teamUseCasesModule = module {
@@ -56,6 +56,7 @@ object KoinModules {
         single { SquadPlayerMapperLocal() }
         single { SquadPlayerMapperService() }
         single { CountryMapperService() }
+        single { CountryMapperLocal() }
     }
 
     val requestGeneratorModule = module{
