@@ -28,7 +28,7 @@ interface TeamDao {
     @Query("""
         SELECT id, name, country, founded, national, logo 
         FROM Teams, SeasonLeagueTeams 
-        WHERE Teams.id = SeasonLeagueTeams.leagueId 
+        WHERE Teams.id = SeasonLeagueTeams.teamId 
             AND SeasonLeagueTeams.leagueId = :leagueId
             AND SeasonLeagueTeams.season = :season
             """)
