@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.dashagy.data.database.AppDatabase
 import com.dashagy.data.database.daos.CountryDao
+import com.dashagy.data.database.daos.LeagueDao
 import com.dashagy.data.database.daos.PlayerDao
 import com.dashagy.data.database.daos.TeamDao
 import com.dashagy.footballapp.viewmodels.*
@@ -23,11 +24,13 @@ object AppKoinModules {
         fun provideTeamDao(dataBase: AppDatabase): TeamDao = dataBase.teamDao
         fun providePlayerDao(database: AppDatabase): PlayerDao = database.playerDao
         fun provideCountryDao(database: AppDatabase): CountryDao = database.countryDao
+        fun provideLeagueDao(database: AppDatabase): LeagueDao = database.leagueDao
 
         single { provideDataBase(androidApplication()) }
         single { provideTeamDao(get()) }
         single { providePlayerDao(get()) }
         single { provideCountryDao(get()) }
+        single { provideLeagueDao(get()) }
     }
 
 
@@ -36,7 +39,7 @@ object AppKoinModules {
         viewModel { PlayersViewModel(get(), get()) }
         viewModel { SquadPlayersViewModel(get()) }
         viewModel { CountriesViewModel(get()) }
-        viewModel { LeaguesViewModel() }
+        viewModel { LeaguesViewModel(get()) }
     }
 }
 

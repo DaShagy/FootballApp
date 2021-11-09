@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/countryListFragment"
-        android:name="com.dashagy.footballapp.CountryListFragment"
+        android:name="com.dashagy.footballapp.fragments.CountryListFragment"
         android:label="fragment_country_list"
         tools:layout="@layout/fragment_country_list">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/leagueListFragment"
-        android:name="com.dashagy.footballapp.LeagueListFragment"
+        android:name="com.dashagy.footballapp.fragments.LeagueListFragment"
         android:label="fragment_league_list"
         tools:layout="@layout/fragment_league_list">
         <argument

@@ -9,8 +9,8 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
 import com.dashagy.domain.entities.Country
-import com.dashagy.footballapp.CountryListFragmentDirections
 import com.dashagy.footballapp.databinding.RecyclerviewCountriesBinding
+import com.dashagy.footballapp.fragments.CountryListFragmentDirections
 
 class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.CountriesViewHolder>() {
 

@@ -1,9 +1,8 @@
-package com.dashagy.domain.entities
+package com.dashagy.data.service.responses
 
-data class League(
+data class LeagueResponse(
     val id: Int,
     val name: String,
-    val country: String?,
     val type: String,
     val logo: String
 )
