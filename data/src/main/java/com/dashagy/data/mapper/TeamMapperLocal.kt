@@ -6,21 +6,21 @@ import com.dashagy.data.database.entities.RoomTeam
 class TeamMapperLocal : BaseMapperRepository<RoomTeam, Team> {
     override fun transform(type: RoomTeam): Team =
         Team(
-            type.id,
-            type.name,
-            type.country,
-            type.founded,
-            type.national,
-            type.logo
+            id = type.id,
+            name = type.name,
+            country = type.country,
+            founded = type.founded,
+            national = type.national,
+            logo = type.logo
         )
 
     override fun transformToRepository(type: Team): RoomTeam =
         RoomTeam(
-            type.id,
-            type.name,
-            type.country,
-            type.founded,
-            type.national,
-            type.logo
+            id = type.id,
+            name = type.name,
+            country = type.country,
+            founded = type.founded,
+            national = type.national,
+            logo = type.logo
         )
 }
