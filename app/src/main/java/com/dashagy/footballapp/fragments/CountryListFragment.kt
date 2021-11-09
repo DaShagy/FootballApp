@@ -41,7 +41,7 @@ class CountryListFragment : Fragment() {
         recyclerView.adapter = countriesAdapter
 
         countriesViewModel.countries.observe(viewLifecycleOwner, ::updateUI)
-        countriesViewModel.getAllCountries(true)
+        countriesViewModel.getAllCountries()
     }
 
     override fun onDestroyView() {
@@ -52,12 +52,26 @@ class CountryListFragment : Fragment() {
     private fun updateUI(resultWrapper: ResultWrapper<List<Country>>) {
         when (resultWrapper){
             is ResultWrapper.Error -> TODO()
-            is ResultWrapper.Success -> updateList(resultWrapper.data)
+            is ResultWrapper.Success -> {
+                hideProgress()
+                updateList(resultWrapper.data)
+            }
+            is ResultWrapper.Loading -> showProgress()
         }
     }
 
     private fun updateList(dataset: List<Country>){
         countriesAdapter.updateDataset(dataset)
         countriesAdapter.notifyDataSetChanged()
+    }
+
+    private fun showProgress() {
+        binding.progress.visibility = View.VISIBLE
+        binding.countriesRecyclerView.visibility = View.GONE
+    }
+
+    private fun hideProgress() {
+        binding.progress.visibility = View.GONE
+        binding.countriesRecyclerView.visibility = View.VISIBLE
     }
 }

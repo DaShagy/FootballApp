@@ -17,13 +17,21 @@ class CountriesViewModel(
     private var _countries: MutableLiveData<ResultWrapper<List<Country>>> = MutableLiveData()
     val countries: LiveData<ResultWrapper<List<Country>>> get() = _countries
 
-    fun getAllCountries(fromRemote: Boolean = false) =
+    fun getAllCountries() =
         viewModelScope.launch {
+            _countries.postValue(ResultWrapper.Loading)
             withContext(Dispatchers.IO) {
-                val countries = getAllCountriesUseCase(fromRemote)
-                val result = if (countries is ResultWrapper.Success){
+                var result = getAllCountriesUseCase(false)
+
+                if (result is ResultWrapper.Success){
+                    if (result.data.isEmpty()){
+                        result = getAllCountriesUseCase(true)
+                    }
+                }
+
+                result = if (result is ResultWrapper.Success){
                     ResultWrapper.Success(
-                        countries.data.filterNotNull()
+                        result.data.filterNotNull()
                     )
                 } else {
                     ResultWrapper.Error(Exception("Un error ha ocurrido"))

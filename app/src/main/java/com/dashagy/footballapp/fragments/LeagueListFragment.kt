@@ -60,12 +60,25 @@ class LeagueListFragment : Fragment() {
     private fun updateUI(resultWrapper: ResultWrapper<List<League>>) {
         when (resultWrapper){
             is ResultWrapper.Error -> TODO()
-            is ResultWrapper.Success -> updateList(resultWrapper.data)
+            is ResultWrapper.Success -> {
+                hideProgress()
+                updateList(resultWrapper.data)
+            }
+            is ResultWrapper.Loading -> showProgress()
         }
     }
 
     private fun updateList(dataset: List<League>){
         leaguesAdapter.updateDataset(dataset)
         leaguesAdapter.notifyDataSetChanged()
+    }
+    private fun showProgress() {
+        binding.progress.visibility = View.VISIBLE
+        binding.leaguesRecyclerView.visibility = View.GONE
+    }
+
+    private fun hideProgress() {
+        binding.progress.visibility = View.GONE
+        binding.leaguesRecyclerView.visibility = View.VISIBLE
     }
 }

@@ -20,8 +20,25 @@ class LeaguesViewModel(
 
     fun getLeaguesByCountry(country: String, fromRemote: Boolean = false) =
         viewModelScope.launch {
+            _leagues.postValue(ResultWrapper.Loading)
             withContext(Dispatchers.IO){
-                _leagues.postValue(getLeaguesByCountryUseCase(country, fromRemote))
+
+                var result = getLeaguesByCountryUseCase(country,false)
+
+                if (result is ResultWrapper.Success){
+                    if (result.data.isEmpty()){
+                        result = getLeaguesByCountryUseCase(country, true)
+                    }
+                }
+
+                result = if (result is ResultWrapper.Success){
+                    ResultWrapper.Success(
+                        result.data.filterNotNull()
+                    )
+                } else {
+                    ResultWrapper.Error(Exception("Un error ha ocurrido"))
+                }
+                _leagues.postValue(result)
             }
         }
 }
