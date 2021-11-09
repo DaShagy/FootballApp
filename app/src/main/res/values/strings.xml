@@ -2,4 +2,6 @@
     <string name="app_name">FootballApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="league_list_fragment_label">Leagues from {country}</string>
+    <string name="team_list_fragment_label">Teams from {league}</string>
 </resources>

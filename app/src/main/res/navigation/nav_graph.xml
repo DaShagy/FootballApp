@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/countryListFragment"
         android:name="com.dashagy.footballapp.fragments.CountryListFragment"
-        android:label="fragment_country_list"
+        android:label="Countries"
         tools:layout="@layout/fragment_country_list">
         <action
             android:id="@+id/action_countryListFragment_to_leagueListFragment"
@@ -17,10 +17,25 @@
     <fragment
         android:id="@+id/leagueListFragment"
         android:name="com.dashagy.footballapp.fragments.LeagueListFragment"
-        android:label="fragment_league_list"
+        android:label="@string/league_list_fragment_label"
         tools:layout="@layout/fragment_league_list">
         <argument
             android:name="country"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_leagueListFragment_to_teamListFragment"
+            app:destination="@id/teamListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/teamListFragment"
+        android:name="com.dashagy.footballapp.fragments.TeamListFragment"
+        android:label="@string/team_list_fragment_label"
+        tools:layout="@layout/fragment_team_list" >
+        <argument
+            android:name="leagueId"
+            app:argType="integer" />
+        <argument
+            android:name="league"
             app:argType="string" />
     </fragment>
 </navigation>
