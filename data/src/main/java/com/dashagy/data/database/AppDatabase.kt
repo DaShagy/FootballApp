@@ -4,18 +4,24 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.dashagy.data.database.daos.PlayerDao
 import com.dashagy.data.database.daos.TeamDao
+import com.dashagy.data.database.entities.RoomPlayer
+import com.dashagy.data.database.entities.RoomSquadPlayer
 import com.dashagy.data.database.entities.RoomTeam
 
 @Database(
     entities = [
         RoomTeam::class,
+        RoomPlayer::class,
+        RoomSquadPlayer::class,
                ],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract val teamDao: TeamDao
+    abstract val playerDao: PlayerDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the

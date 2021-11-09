@@ -1,6 +1,11 @@
-package com.dashagy.domain.entities
+package com.dashagy.data.database.entities
 
-data class Player(
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "Players")
+data class RoomPlayer(
+    @PrimaryKey
     val id: Int,
     val name: String,
     val firstname: String,
