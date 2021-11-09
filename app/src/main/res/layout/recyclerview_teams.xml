@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/leagueLogoImageView"
+            android:id="@+id/teamLogoImageView"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="16dp"
@@ -27,7 +27,7 @@
 
 
         <TextView
-            android:id="@+id/leagueNameTextView"
+            android:id="@+id/teamNameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -39,7 +39,7 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/leagueLogoImageView"
+            app:layout_constraintStart_toEndOf="@+id/teamLogoImageView"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Argentina" />
 

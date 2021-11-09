@@ -4,6 +4,7 @@ import com.dashagy.domain.entities.Team
 import com.dashagy.domain.repositories.TeamsRepository
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.data.database.daos.TeamDao
+import com.dashagy.data.database.entities.SeasonLeagueTeamRelation
 import com.dashagy.data.mapper.TeamMapperLocal
 import com.dashagy.data.service.services.TeamService
 
@@ -46,6 +47,17 @@ class TeamsRepositoryImpl(
             if (teamResult is ResultWrapper.Success) {
                 val teams = teamResult.data.map { team -> mapper.transformToRepository(team) }
                 teams.map { dao.insertTeam(it) }
+                if (queryType is TeamQueryType.League){
+                    teams.map { team ->
+                        dao.insertSeasonLeagueTeamRelation(
+                            SeasonLeagueTeamRelation(
+                                teamId = team.id,
+                                leagueId = queryType.leagueId,
+                                season = queryType.season
+                            )
+                        )
+                    }
+                }
             }
             return teamResult
         } else {
@@ -60,7 +72,14 @@ class TeamsRepositoryImpl(
                         dao.getTeamById(queryType.id).map { mapper.transform(it) }
                     )
                 }
-                is TeamQueryType.League -> TODO("Search by league locale not implemented yet. Need a league reference in locale db")
+                is TeamQueryType.League ->{
+                    teamResult = ResultWrapper.Success(
+                        dao.getTeamByLeague(
+                            queryType.leagueId,
+                            queryType.season
+                        ).map { mapper.transform(it) }
+                    )
+                }
                 is TeamQueryType.Name -> {
                     teamResult = ResultWrapper.Success(
                         dao.getTeamByName(queryType.name).map{ mapper.transform(it) }

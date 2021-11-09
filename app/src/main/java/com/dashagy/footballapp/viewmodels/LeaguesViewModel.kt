@@ -18,7 +18,7 @@ class LeaguesViewModel(
     private var _leagues: MutableLiveData<ResultWrapper<List<League>>> = MutableLiveData()
     val leagues: LiveData<ResultWrapper<List<League>>> get() = _leagues
 
-    fun getLeaguesByCountry(country: String, fromRemote: Boolean = false) =
+    fun getLeaguesByCountry(country: String) =
         viewModelScope.launch {
             _leagues.postValue(ResultWrapper.Loading)
             withContext(Dispatchers.IO){

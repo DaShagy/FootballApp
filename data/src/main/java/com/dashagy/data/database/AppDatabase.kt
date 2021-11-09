@@ -16,7 +16,8 @@ import com.dashagy.data.database.entities.*
         RoomPlayer::class,
         RoomSquadPlayer::class,
         RoomCountry::class,
-        RoomLeague::class
+        RoomLeague::class,
+        SeasonLeagueTeamRelation::class
                ],
     version = 1
 )

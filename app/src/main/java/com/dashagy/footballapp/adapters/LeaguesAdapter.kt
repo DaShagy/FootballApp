@@ -3,9 +3,13 @@ package com.dashagy.footballapp.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.dashagy.domain.entities.League
 import com.dashagy.footballapp.databinding.RecyclerviewLeaguesBinding
+import com.dashagy.footballapp.fragments.CountryListFragmentDirections
+import com.dashagy.footballapp.fragments.LeagueListFragmentDirections
 
 class LeaguesAdapter : RecyclerView.Adapter<LeaguesAdapter.LeagueViewHolder>() {
 
@@ -32,7 +36,15 @@ class LeaguesAdapter : RecyclerView.Adapter<LeaguesAdapter.LeagueViewHolder>() {
 
     override fun onBindViewHolder(holder: LeagueViewHolder, position: Int) {
         with (dataset[position]){
-            holder.binding.leagueName.text = this.name
+            holder.binding.leagueNameTextView.text = this.name
+            holder.binding.leagueLogoImageView.load(
+                this.logo
+            )
+
+            holder.binding.leagueNameTextView.setOnClickListener {
+                val action = LeagueListFragmentDirections.actionLeagueListFragmentToTeamListFragment(this.id, this.name)
+                holder.binding.root.findNavController().navigate(action)
+            }
         }
     }
 

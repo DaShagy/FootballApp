@@ -33,10 +33,27 @@ class TeamsViewModel(
             }
         }
 
-    fun getTeamByLeague(leagueId: Int, season: Int, fromRemote: Boolean = false) =
+    fun getTeamByLeague(leagueId: Int, season: Int) =
         viewModelScope.launch {
+            _teams.postValue(ResultWrapper.Loading)
             withContext(Dispatchers.IO){
-                _teams.postValue(getTeam.byLeague(leagueId, season, fromRemote))
+
+                var result = getTeam.byLeague(leagueId, season, false)
+
+                if (result is ResultWrapper.Success){
+                    if (result.data.isEmpty()){
+                        result = getTeam.byLeague(leagueId, season, true)
+                    }
+                }
+
+                result = if (result is ResultWrapper.Success){
+                    ResultWrapper.Success(
+                        result.data.filterNotNull()
+                    )
+                } else {
+                    ResultWrapper.Error(Exception("Un error ha ocurrido"))
+                }
+                _teams.postValue(result)
             }
         }
 
