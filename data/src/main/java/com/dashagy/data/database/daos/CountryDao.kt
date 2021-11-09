@@ -8,7 +8,7 @@ import com.dashagy.data.database.entities.RoomCountry
 
 @Dao
 interface CountryDao {
-    @Query("SELECT * FROM Countries")
+    @Query("SELECT * FROM Countries WHERE code IS NOT NULL OR flag IS NOT NULL")
     suspend fun getAllCountries(): List<RoomCountry>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -59,4 +59,11 @@ interface ApiSportsFootball {
         @GET("/countries")
         fun getAllCountries(): Call<ApiSportsBaseResponse<List<CountryResponse>>>
     }
+
+    interface Leagues{
+        @GET("/leagues")
+        fun getLeaguesByCountry(
+            @Query(value = "country") country: String
+        ): Call<ApiSportsBaseResponse<List<LeagueBaseResponse>>>
+    }
 }

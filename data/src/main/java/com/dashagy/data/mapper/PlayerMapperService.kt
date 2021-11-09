@@ -38,9 +38,7 @@ class PlayerMapperService : BaseMapperRepository<PlayerBaseResponse, Player> {
                         name = Util.EMPTY_STRING,
                         country = Util.EMPTY_STRING,
                         type = Util.EMPTY_STRING,
-                        logo = Util.EMPTY_STRING,
-                        flag = Util.EMPTY_STRING,
-                        season = Util.ZERO
+                        logo = Util.EMPTY_STRING
                     )
                 )
             )

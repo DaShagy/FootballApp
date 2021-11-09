@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/countryListFragment">
+
+    <fragment
+        android:id="@+id/countryListFragment"
+        android:name="com.dashagy.footballapp.fragments.CountryListFragment"
+        android:label="fragment_country_list"
+        tools:layout="@layout/fragment_country_list">
+        <action
+            android:id="@+id/action_countryListFragment_to_leagueListFragment"
+            app:destination="@id/leagueListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/leagueListFragment"
+        android:name="com.dashagy.footballapp.fragments.LeagueListFragment"
+        android:label="fragment_league_list"
+        tools:layout="@layout/fragment_league_list">
+        <argument
+            android:name="country"
+            app:argType="string" />
+    </fragment>
+</navigation>
