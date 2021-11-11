@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.League
 import com.dashagy.domain.util.ResultWrapper
+import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.LeaguesAdapter
 import com.dashagy.footballapp.databinding.FragmentLeagueListBinding
 import com.dashagy.footballapp.viewmodels.LeaguesViewModel
@@ -61,6 +63,11 @@ class LeagueListFragment : Fragment() {
         _binding = null
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("country", country)
+        super.onSaveInstanceState(outState)
+    }
+
     private fun updateUI(resultWrapper: ResultWrapper<List<League>>) {
         when (resultWrapper){
             is ResultWrapper.Error -> TODO()
@@ -87,7 +94,15 @@ class LeagueListFragment : Fragment() {
     }
 
     private fun navigate(league: League){
-        val action = LeagueListFragmentDirections.actionLeagueListFragmentToTeamListFragment(league.id, league.name)
-        binding.root.findNavController().navigate(action)
+        val bundle = Bundle()
+        bundle.putInt("leagueId", league.id)
+        val teamListFragment = TeamListFragment()
+        teamListFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayoutFragment, teamListFragment)
+            addToBackStack("teamFragment")
+            commit()
+        }
     }
 }

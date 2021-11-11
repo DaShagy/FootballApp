@@ -9,9 +9,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.Country
 import com.dashagy.domain.util.ResultWrapper
+import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.CountriesAdapter
 import com.dashagy.footballapp.databinding.FragmentCountryListBinding
 import com.dashagy.footballapp.viewmodels.CountriesViewModel
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CountryListFragment : Fragment() {
@@ -81,7 +83,15 @@ class CountryListFragment : Fragment() {
     }
 
     private fun navigation(country: Country){
-        val action = CountryListFragmentDirections.actionCountryListFragmentToLeagueListFragment(country.name)
-        binding.root.findNavController().navigate(action)
+        val bundle = Bundle()
+        bundle.putString("country", country.name)
+        val leagueListFragment = LeagueListFragment()
+        leagueListFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayoutFragment, leagueListFragment)
+            this.addToBackStack("leagueFragment")
+            commit()
+        }
     }
 }

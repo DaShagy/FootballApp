@@ -3,14 +3,10 @@ package com.dashagy.footballapp.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.dashagy.domain.entities.Country
 import com.dashagy.domain.entities.League
 import com.dashagy.footballapp.databinding.RecyclerviewLeaguesBinding
-import com.dashagy.footballapp.fragments.CountryListFragmentDirections
-import com.dashagy.footballapp.fragments.LeagueListFragmentDirections
 
 class LeaguesAdapter(
     private val listener: (League) -> Unit

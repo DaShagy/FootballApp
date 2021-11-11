@@ -3,14 +3,12 @@ package com.dashagy.footballapp.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
 import com.dashagy.domain.entities.Country
 import com.dashagy.footballapp.databinding.RecyclerviewCountriesBinding
-import com.dashagy.footballapp.fragments.CountryListFragmentDirections
 
 class CountriesAdapter(
     private val listener: (Country) -> Unit

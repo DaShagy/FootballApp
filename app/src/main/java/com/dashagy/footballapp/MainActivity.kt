@@ -7,10 +7,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.dashagy.footballapp.databinding.ActivityMainBinding
+import com.dashagy.footballapp.fragments.CountryListFragment
+import com.dashagy.footballapp.fragments.LeagueListFragment
+import com.dashagy.footballapp.fragments.TeamListFragment
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var navController: NavController
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -19,20 +20,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
+
+        val countryListFragment = CountryListFragment()
+        val frameLayoutFragmentId = binding.frameLayoutFragment.id
+
+        supportFragmentManager.beginTransaction().apply {
+            replace(frameLayoutFragmentId, countryListFragment)
+            this.addToBackStack("countryFragment")
+            commit()
+        }
+
         setContentView(binding.root)
-
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        setupActionBarWithNavController(navController)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    private fun showMessage(message: String){
+    fun showMessage(message: String){
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
