@@ -12,7 +12,9 @@ import com.dashagy.domain.entities.Country
 import com.dashagy.footballapp.databinding.RecyclerviewCountriesBinding
 import com.dashagy.footballapp.fragments.CountryListFragmentDirections
 
-class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.CountriesViewHolder>() {
+class CountriesAdapter(
+    private val listener: (Country) -> Unit
+) : RecyclerView.Adapter<CountriesAdapter.CountriesViewHolder>() {
 
     private var dataset = mutableListOf<Country>()
     private lateinit var context: Context
@@ -22,8 +24,15 @@ class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.CountriesViewHold
     }
 
     class CountriesViewHolder(
-        val binding : RecyclerviewCountriesBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+        val binding : RecyclerviewCountriesBinding,
+        val onClickItem: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root){
+        init {
+            binding.root.setOnClickListener {
+                (onClickItem(adapterPosition))
+            }
+        }
+    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -32,7 +41,9 @@ class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.CountriesViewHold
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountriesViewHolder {
         val binding = RecyclerviewCountriesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CountriesViewHolder(binding)
+        return CountriesViewHolder(binding) {
+            listener(dataset[it])
+        }
     }
 
     override fun onBindViewHolder(holder: CountriesViewHolder, position: Int) {
@@ -45,11 +56,6 @@ class CountriesAdapter : RecyclerView.Adapter<CountriesAdapter.CountriesViewHold
 
             holder.binding.countryNameTextView.text = this.name
             holder.binding.countryFlagImageView.load(this.flag?: "", imageLoader)
-
-            holder.binding.countryNameTextView.setOnClickListener {
-                val action = CountryListFragmentDirections.actionCountryListFragmentToLeagueListFragment(this.name)
-                holder.binding.root.findNavController().navigate(action)
-            }
         }
     }
 

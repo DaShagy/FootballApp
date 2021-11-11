@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.League
 import com.dashagy.domain.util.ResultWrapper
@@ -19,7 +20,7 @@ class LeagueListFragment : Fragment() {
     private var _binding: FragmentLeagueListBinding? = null
     private val binding get() = _binding!!
 
-    private val leaguesAdapter = LeaguesAdapter()
+    private lateinit var leaguesAdapter : LeaguesAdapter
 
     private val leaguesViewModel by viewModel<LeaguesViewModel>()
 
@@ -43,6 +44,10 @@ class LeagueListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        leaguesAdapter = LeaguesAdapter {
+            navigate(it)
+        }
 
         val recyclerView = binding.leaguesRecyclerView
         recyclerView.adapter = leaguesAdapter
@@ -79,5 +84,10 @@ class LeagueListFragment : Fragment() {
     private fun hideProgress() {
         binding.progress.visibility = View.GONE
         binding.leaguesRecyclerView.visibility = View.VISIBLE
+    }
+
+    private fun navigate(league: League){
+        val action = LeagueListFragmentDirections.actionLeagueListFragmentToTeamListFragment(league.id, league.name)
+        binding.root.findNavController().navigate(action)
     }
 }

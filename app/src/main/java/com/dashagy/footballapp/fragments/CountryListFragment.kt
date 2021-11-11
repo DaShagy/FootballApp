@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.Country
 import com.dashagy.domain.util.ResultWrapper
@@ -17,7 +18,7 @@ class CountryListFragment : Fragment() {
     private var _binding: FragmentCountryListBinding? = null
     private val binding get() = _binding!!
 
-    private val countriesAdapter = CountriesAdapter()
+    private lateinit var countriesAdapter : CountriesAdapter
 
     private val countriesViewModel by viewModel<CountriesViewModel>()
 
@@ -35,6 +36,10 @@ class CountryListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        countriesAdapter = CountriesAdapter {
+            navigation(it)
+        }
 
         val recyclerView = binding.countriesRecyclerView
         recyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -73,5 +78,10 @@ class CountryListFragment : Fragment() {
     private fun hideProgress() {
         binding.progress.visibility = View.GONE
         binding.countriesRecyclerView.visibility = View.VISIBLE
+    }
+
+    private fun navigation(country: Country){
+        val action = CountryListFragmentDirections.actionCountryListFragmentToLeagueListFragment(country.name)
+        binding.root.findNavController().navigate(action)
     }
 }
