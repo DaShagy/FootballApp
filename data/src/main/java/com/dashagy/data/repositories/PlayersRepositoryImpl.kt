@@ -1,12 +1,10 @@
 package com.dashagy.data.repositories
 
-import android.util.Log
 import com.dashagy.data.database.daos.PlayerDao
 import com.dashagy.data.mapper.PlayerMapperLocal
 import com.dashagy.data.mapper.SquadPlayerMapperLocal
 import com.dashagy.data.service.services.PlayerService
 import com.dashagy.domain.entities.Player
-import com.dashagy.domain.entities.Season
 import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.repositories.PlayersRepository
 import com.dashagy.domain.util.ResultWrapper
@@ -47,7 +45,9 @@ class PlayersRepositoryImpl (
             val playerResult = service.getPlayerByTeam(teamId, season)
             if (playerResult is ResultWrapper.Success){
                 val teams = playerResult.data.map { team -> playerMapper.transformToRepository(team) }
-                teams.map { dao.insertPlayer(it) }
+                teams.map {
+                    dao.insertPlayer(it)
+                }
             }
             playerResult
         } else {
@@ -70,6 +70,10 @@ class PlayersRepositoryImpl (
             }
             playerResult
         } else {
-            ResultWrapper.Error(Exception("Locale not implemented yet"))
+            ResultWrapper.Success(
+                dao.getSquadPlayerByTeam(teamId).map{
+                    squadPlayerMapper.transform(it)
+                }
+            )
         }
 }
