@@ -5,15 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.Country
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.CountriesAdapter
 import com.dashagy.footballapp.databinding.FragmentCountryListBinding
-import com.dashagy.footballapp.viewmodels.CountriesViewModel
-import org.koin.android.ext.android.get
+import com.dashagy.footballapp.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CountryListFragment : Fragment() {
@@ -22,7 +20,7 @@ class CountryListFragment : Fragment() {
 
     private lateinit var countriesAdapter : CountriesAdapter
 
-    private val countriesViewModel by viewModel<CountriesViewModel>()
+    private val mainViewModel by viewModel<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +29,7 @@ class CountryListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentCountryListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -47,8 +45,8 @@ class CountryListFragment : Fragment() {
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         recyclerView.adapter = countriesAdapter
 
-        countriesViewModel.countries.observe(viewLifecycleOwner, ::updateUI)
-        countriesViewModel.getAllCountries()
+        mainViewModel.countries.observe(viewLifecycleOwner, ::updateUI)
+        mainViewModel.getAllCountries()
     }
 
     override fun onDestroyView() {

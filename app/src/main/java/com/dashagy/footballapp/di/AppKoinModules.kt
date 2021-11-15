@@ -1,6 +1,7 @@
 package com.dashagy.footballapp.di
 
 import android.app.Application
+import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import com.dashagy.data.database.AppDatabase
 import com.dashagy.data.database.daos.CountryDao
@@ -35,11 +36,9 @@ object AppKoinModules {
 
 
     val viewModelsModule = module {
-        viewModel { TeamsViewModel(get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
         viewModel { PlayersViewModel(get(), get()) }
         viewModel { SquadPlayersViewModel(get()) }
-        viewModel { CountriesViewModel(get()) }
-        viewModel { LeaguesViewModel(get()) }
     }
 }
 

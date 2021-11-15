@@ -9,7 +9,7 @@ import com.dashagy.domain.entities.Team
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.adapters.TeamsAdapter
 import com.dashagy.footballapp.databinding.FragmentTeamListBinding
-import com.dashagy.footballapp.viewmodels.TeamsViewModel
+import com.dashagy.footballapp.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TeamListFragment : Fragment() {
@@ -19,7 +19,7 @@ class TeamListFragment : Fragment() {
 
     private val teamsAdapter = TeamsAdapter()
 
-    private val teamsViewModel by viewModel<TeamsViewModel>()
+    private val mainViewModel by viewModel<MainViewModel>()
 
     private var leagueId: Int = 0
 
@@ -45,8 +45,8 @@ class TeamListFragment : Fragment() {
         val recyclerView = binding.teamsRecyclerView
         recyclerView.adapter = teamsAdapter
 
-        teamsViewModel.teams.observe(viewLifecycleOwner, ::updateUI)
-        teamsViewModel.getTeamByLeague(leagueId, 2021)
+        mainViewModel.teams.observe(viewLifecycleOwner, ::updateUI)
+        mainViewModel.getTeamByLeague(leagueId, 2021)
     }
 
     override fun onDestroyView() {

@@ -5,15 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.navigation.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.League
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.LeaguesAdapter
 import com.dashagy.footballapp.databinding.FragmentLeagueListBinding
-import com.dashagy.footballapp.viewmodels.LeaguesViewModel
+import com.dashagy.footballapp.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -24,7 +21,7 @@ class LeagueListFragment : Fragment() {
 
     private lateinit var leaguesAdapter : LeaguesAdapter
 
-    private val leaguesViewModel by viewModel<LeaguesViewModel>()
+    private val mainViewModel by viewModel<MainViewModel>()
 
     private lateinit var country: String
 
@@ -39,7 +36,7 @@ class LeagueListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentLeagueListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,8 +51,8 @@ class LeagueListFragment : Fragment() {
         val recyclerView = binding.leaguesRecyclerView
         recyclerView.adapter = leaguesAdapter
 
-        leaguesViewModel.leagues.observe(viewLifecycleOwner, ::updateUI)
-        leaguesViewModel.getLeaguesByCountry(country)
+        mainViewModel.leagues.observe(viewLifecycleOwner, ::updateUI)
+        mainViewModel.getLeaguesByCountry(country)
     }
 
     override fun onDestroyView() {
