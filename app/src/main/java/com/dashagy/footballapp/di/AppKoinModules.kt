@@ -36,9 +36,7 @@ object AppKoinModules {
 
 
     val viewModelsModule = module {
-        viewModel { MainViewModel(get(), get(), get()) }
-        viewModel { PlayersViewModel(get(), get()) }
-        viewModel { SquadPlayersViewModel(get()) }
+        viewModel { MainViewModel(get(), get(), get(), get()) }
     }
 }
 

@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.dashagy.domain.entities.League
+import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.entities.Team
 import com.dashagy.domain.util.ResultWrapper
+import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.TeamsAdapter
 import com.dashagy.footballapp.databinding.FragmentTeamListBinding
 import com.dashagy.footballapp.viewmodels.MainViewModel
@@ -17,7 +20,7 @@ class TeamListFragment : Fragment() {
     private var _binding: FragmentTeamListBinding? = null
     private val binding get() = _binding!!
 
-    private val teamsAdapter = TeamsAdapter()
+    private lateinit var teamsAdapter : TeamsAdapter
 
     private val mainViewModel by viewModel<MainViewModel>()
 
@@ -34,13 +37,17 @@ class TeamListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentTeamListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        teamsAdapter = TeamsAdapter {
+            navigate(it)
+        }
 
         val recyclerView = binding.teamsRecyclerView
         recyclerView.adapter = teamsAdapter
@@ -78,5 +85,19 @@ class TeamListFragment : Fragment() {
     private fun hideProgress() {
         binding.progress.visibility = View.GONE
         binding.teamsRecyclerView.visibility = View.VISIBLE
+    }
+
+    private fun navigate(team: Team){
+        val bundle = Bundle()
+        bundle.putInt("teamId", team.id)
+        val squadPlayerListFragment = SquadPlayerListFragment()
+        squadPlayerListFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayoutFragment, squadPlayerListFragment)
+            parentFragmentManager.popBackStack()
+            addToBackStack("squadPlayerFragment")
+            commit()
+        }
     }
 }

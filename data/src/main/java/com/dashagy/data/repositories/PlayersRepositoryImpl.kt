@@ -1,5 +1,6 @@
 package com.dashagy.data.repositories
 
+import android.util.Log
 import com.dashagy.data.database.daos.PlayerDao
 import com.dashagy.data.mapper.PlayerMapperLocal
 import com.dashagy.data.mapper.SquadPlayerMapperLocal
@@ -69,6 +70,6 @@ class PlayersRepositoryImpl (
             }
             playerResult
         } else {
-            TODO("getSquadByTeam locale")
+            ResultWrapper.Error(Exception("Locale not implemented yet"))
         }
 }

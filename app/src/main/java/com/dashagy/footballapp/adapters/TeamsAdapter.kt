@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.dashagy.domain.entities.League
 import com.dashagy.domain.entities.Team
 import com.dashagy.footballapp.databinding.RecyclerviewTeamsBinding
 
-class TeamsAdapter : RecyclerView.Adapter<TeamsAdapter.TeamViewHolder>() {
+class TeamsAdapter(
+    private val listener: (Team) -> Unit
+) : RecyclerView.Adapter<TeamsAdapter.TeamViewHolder>() {
 
     private var dataset = mutableListOf<Team>()
     private lateinit var context: Context
@@ -19,8 +20,15 @@ class TeamsAdapter : RecyclerView.Adapter<TeamsAdapter.TeamViewHolder>() {
     }
 
     class TeamViewHolder(
-        val binding : RecyclerviewTeamsBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+        val binding : RecyclerviewTeamsBinding,
+        val onItemClick: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root){
+        init {
+            binding.root.setOnClickListener {
+                onItemClick(adapterPosition)
+            }
+        }
+    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -29,7 +37,9 @@ class TeamsAdapter : RecyclerView.Adapter<TeamsAdapter.TeamViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TeamViewHolder {
         val binding = RecyclerviewTeamsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TeamViewHolder(binding)
+        return TeamViewHolder(binding){
+            listener(dataset[it])
+        }
     }
 
     override fun onBindViewHolder(holder: TeamViewHolder, position: Int) {
