@@ -101,6 +101,7 @@ class LeagueListFragment : Fragment() {
 
         parentFragmentManager.beginTransaction().apply {
             replace(R.id.frameLayoutFragment, teamListFragment)
+            parentFragmentManager.popBackStack()
             addToBackStack("teamFragment")
             commit()
         }
