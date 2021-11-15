@@ -24,13 +24,24 @@ class MainActivity : AppCompatActivity() {
         val countryListFragment = CountryListFragment()
         val frameLayoutFragmentId = binding.frameLayoutFragment.id
 
-        supportFragmentManager.beginTransaction().apply {
-            replace(frameLayoutFragmentId, countryListFragment)
-            this.addToBackStack("countryFragment")
-            commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().apply {
+                replace(frameLayoutFragmentId, countryListFragment)
+                this.addToBackStack("countryFragment")
+                commit()
+            }
         }
 
         setContentView(binding.root)
+    }
+
+    override fun onBackPressed() {
+
+        if (supportFragmentManager.backStackEntryCount == 1) {
+            supportFragmentManager.popBackStack();
+        }
+
+        super.onBackPressed()
     }
 
     fun showMessage(message: String){
