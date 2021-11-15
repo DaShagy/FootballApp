@@ -4,7 +4,7 @@ import com.dashagy.domain.entities.Team
 import com.dashagy.domain.repositories.TeamsRepository
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.data.database.daos.TeamDao
-import com.dashagy.data.database.entities.SeasonLeagueTeamRelation
+import com.dashagy.data.database.entities.RelationSeasonLeagueTeam
 import com.dashagy.data.mapper.TeamMapperLocal
 import com.dashagy.data.service.services.TeamService
 
@@ -50,7 +50,7 @@ class TeamsRepositoryImpl(
                 if (queryType is TeamQueryType.League){
                     teams.map { team ->
                         dao.insertSeasonLeagueTeamRelation(
-                            SeasonLeagueTeamRelation(
+                            RelationSeasonLeagueTeam(
                                 teamId = team.id,
                                 leagueId = queryType.leagueId,
                                 season = queryType.season
