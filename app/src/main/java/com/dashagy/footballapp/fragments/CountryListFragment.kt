@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.Country
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.R
+import com.dashagy.footballapp.AppUtil
 import com.dashagy.footballapp.adapters.CountriesAdapter
 import com.dashagy.footballapp.databinding.FragmentCountryListBinding
 import com.dashagy.footballapp.viewmodels.MainViewModel
@@ -56,7 +57,14 @@ class CountryListFragment : Fragment() {
 
     private fun updateUI(resultWrapper: ResultWrapper<List<Country>>) {
         when (resultWrapper){
-            is ResultWrapper.Error -> TODO()
+            is ResultWrapper.Error -> {
+                hideProgress()
+                AppUtil.showMessage(
+                    requireActivity(),
+                    resultWrapper.exception.message ?:
+                        "Error desconocido"
+                )
+            }
             is ResultWrapper.Success -> {
                 hideProgress()
                 updateList(resultWrapper.data)

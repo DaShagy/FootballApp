@@ -43,8 +43,4 @@ class MainActivity : AppCompatActivity() {
 
         super.onBackPressed()
     }
-
-    fun showMessage(message: String){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
 }

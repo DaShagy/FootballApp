@@ -14,17 +14,21 @@ class LeagueService(context: Context) {
     fun getLeaguesByCountry(country: String) : ResultWrapper<List<League>>{
         val service = api.createService(ApiSportsFootball.Leagues::class.java)
             .getLeaguesByCountry(country)
-        val response = service.execute()
-        return if (response.isSuccessful){
-            ResultWrapper.Success(
-                response.body()?.response?.let{ list ->
-                    list.map {
-                        mapper.transform(it)
-                    }
-                }!!
-            )
-        } else {
-            ResultWrapper.Error(Exception(response.message()))
+        try {
+            val response = service.execute()
+            return if (response.isSuccessful) {
+                ResultWrapper.Success(
+                    response.body()?.response?.let { list ->
+                        list.map {
+                            mapper.transform(it)
+                        }
+                    }!!
+                )
+            } else {
+                ResultWrapper.Error(Exception(response.message()))
+            }
+        } catch (e: Exception){
+            return ResultWrapper.Error(e)
         }
     }
 }

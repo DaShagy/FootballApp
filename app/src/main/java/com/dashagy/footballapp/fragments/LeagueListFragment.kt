@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.dashagy.domain.entities.League
 import com.dashagy.domain.util.ResultWrapper
+import com.dashagy.footballapp.AppUtil
 import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.LeaguesAdapter
 import com.dashagy.footballapp.databinding.FragmentLeagueListBinding
@@ -67,7 +68,15 @@ class LeagueListFragment : Fragment() {
 
     private fun updateUI(resultWrapper: ResultWrapper<List<League>>) {
         when (resultWrapper){
-            is ResultWrapper.Error -> TODO()
+            is ResultWrapper.Error ->{
+                hideProgress()
+                AppUtil.showMessage(
+                    requireActivity(),
+                    resultWrapper.exception.message ?:
+                    "Error desconocido"
+                )
+                parentFragmentManager.popBackStack()
+            }
             is ResultWrapper.Success -> {
                 hideProgress()
                 updateList(resultWrapper.data)

@@ -36,17 +36,21 @@ class TeamService(context: Context) {
                callResponse = service.getTeamBySearch(queryType.search)
             }
         }
-        val response = callResponse.execute()
-        if (response.isSuccessful) {
-            return ResultWrapper.Success(
-                response
-                    .body()
-                    ?.response
-                    ?.map {
-                        mapper.transform(it)
-                    }!!
-            )
+        try {
+            val response = callResponse.execute()
+            if (response.isSuccessful) {
+                return ResultWrapper.Success(
+                    response
+                        .body()
+                        ?.response
+                        ?.map {
+                            mapper.transform(it)
+                        }!!
+                )
+            }
+            return ResultWrapper.Error(Exception(response.message()))
+        } catch (e: Exception){
+            return ResultWrapper.Error(e)
         }
-        return ResultWrapper.Error(Exception(response.message()))
     }
 }

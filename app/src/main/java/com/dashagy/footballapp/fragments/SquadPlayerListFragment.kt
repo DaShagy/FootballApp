@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.util.ResultWrapper
+import com.dashagy.footballapp.AppUtil
 import com.dashagy.footballapp.adapters.SquadPlayersAdapter
 import com.dashagy.footballapp.databinding.FragmentPlayerListBinding
 import com.dashagy.footballapp.viewmodels.MainViewModel
@@ -56,7 +57,15 @@ class SquadPlayerListFragment : Fragment() {
 
     private fun updateUI(resultWrapper: ResultWrapper<List<SquadPlayer>>) {
         when (resultWrapper){
-            is ResultWrapper.Error -> TODO()
+            is ResultWrapper.Error -> {
+                hideProgress()
+                AppUtil.showMessage(
+                    requireActivity(),
+                    resultWrapper.exception.message ?:
+                    "Error desconocido"
+                )
+                parentFragmentManager.popBackStack()
+            }
             is ResultWrapper.Success -> {
                 hideProgress()
                 updateList(resultWrapper.data)

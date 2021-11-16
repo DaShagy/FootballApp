@@ -9,6 +9,7 @@ import com.dashagy.domain.entities.League
 import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.entities.Team
 import com.dashagy.domain.util.ResultWrapper
+import com.dashagy.footballapp.AppUtil
 import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.TeamsAdapter
 import com.dashagy.footballapp.databinding.FragmentTeamListBinding
@@ -63,7 +64,15 @@ class TeamListFragment : Fragment() {
 
     private fun updateUI(resultWrapper: ResultWrapper<List<Team>>) {
         when (resultWrapper){
-            is ResultWrapper.Error -> TODO()
+            is ResultWrapper.Error -> {
+                hideProgress()
+                AppUtil.showMessage(
+                    requireActivity(),
+                    resultWrapper.exception.message ?:
+                    "Error desconocido"
+                )
+                parentFragmentManager.popBackStack()
+            }
             is ResultWrapper.Success -> {
                 hideProgress()
                 updateList(resultWrapper.data)
