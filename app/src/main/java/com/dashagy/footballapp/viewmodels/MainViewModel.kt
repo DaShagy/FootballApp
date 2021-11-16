@@ -37,63 +37,46 @@ class MainViewModel(
     private var _squadPlayers: MutableLiveData<ResultWrapper<List<SquadPlayer>>> = MutableLiveData()
     val squadPlayers: LiveData<ResultWrapper<List<SquadPlayer>>> get() = _squadPlayers
 
-    fun getAllCountries() =
-        viewModelScope.launch {
-            _countries.postValue(ResultWrapper.Loading)
-            getDataFromRepository(_countries, getAllCountriesUseCase)
-        }
+    fun getAllCountries() = getDataFromRepository(_countries, getAllCountriesUseCase)
 
     fun getLeaguesByCountry(country: String) =
-        viewModelScope.launch {
-            _leagues.postValue(ResultWrapper.Loading)
-            getDataFromRepository(_leagues, getLeaguesByCountryUseCase, country)
-        }
+        getDataFromRepository(_leagues, getLeaguesByCountryUseCase, country)
 
     fun getTeamByLeague(leagueId: Int, season: Int) =
-        viewModelScope.launch {
-            _teams.postValue(ResultWrapper.Loading)
-            getDataFromRepository(
-                _teams,
-                getTeamByLeagueUseCase,
-                leagueId.toString(),
-                season.toString()
-            )
-        }
+        getDataFromRepository(
+            _teams,
+            getTeamByLeagueUseCase,
+            leagueId.toString(),
+            season.toString()
+        )
 
     fun getPlayerByTeam(teamId: Int) =
-        viewModelScope.launch {
-            _squadPlayers.postValue(ResultWrapper.Loading)
-            getDataFromRepository(_squadPlayers, getSquadPlayersByTeamUseCase, teamId.toString())
-        }
+        getDataFromRepository(_squadPlayers, getSquadPlayersByTeamUseCase, teamId.toString())
 
-    private suspend fun <T> getDataFromRepository(
+    private fun <T> getDataFromRepository(
         _data: MutableLiveData<ResultWrapper<List<T>>>,
-        useCase: UseCase,
+        useCase: UseCase<T>,
         vararg params: String
-    ) = withContext(Dispatchers.IO){
-        var result = useCase(fromRemote = false, *params)
-                as ResultWrapper<List<T>>
+    ) = viewModelScope.launch {
+        _data.postValue(ResultWrapper.Loading)
+        withContext(Dispatchers.IO) {
+            var result = useCase(fromRemote = false, *params)
 
-        when (result){
-            is ResultWrapper.Error -> {
-                result = useCase(fromRemote = true, *params)
-                        as ResultWrapper<List<T>>
-            }
-            is ResultWrapper.Success -> {
-                if (result.data.isEmpty()){
+            when (result) {
+                is ResultWrapper.Error -> {
                     result = useCase(fromRemote = true, *params)
-                            as ResultWrapper<List<T>>
+                }
+                is ResultWrapper.Success -> {
+                    if (result.data.isEmpty()) {
+                        result = useCase(fromRemote = true, *params)
+                    }
                 }
             }
-        }
 
-        result = if (result is ResultWrapper.Success){
-            ResultWrapper.Success(
-                result.data.filterNotNull()
-            )
-        } else {
-            ResultWrapper.Error(Exception("Un error ha ocurrido"))
+            if (result is ResultWrapper.Success) {
+                result = ResultWrapper.Success(result.data.filterNotNull())
+            }
+            _data.postValue(result)
         }
-        _data.postValue(result)
     }
 }

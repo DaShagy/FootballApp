@@ -29,11 +29,15 @@ class PlayersRepositoryImpl (
             }
             playerResult
         } else {
-            ResultWrapper.Success(
-                dao.getPlayerById(id).map{
-                    playerMapper.transform(it)
-                }
-            )
+            if (dao.getPlayerById(id).isEmpty()){
+                ResultWrapper.Error(Exception("Database is empty"))
+            } else {
+                ResultWrapper.Success(
+                    dao.getPlayerById(id).map {
+                        playerMapper.transform(it)
+                    }
+                )
+            }
         }
 
     override suspend fun getPlayerByTeam(
@@ -70,10 +74,14 @@ class PlayersRepositoryImpl (
             }
             playerResult
         } else {
-            ResultWrapper.Success(
-                dao.getSquadPlayerByTeam(teamId).map{
-                    squadPlayerMapper.transform(it)
-                }
-            )
+            if (dao.getSquadPlayerByTeam(teamId).isEmpty()){
+                ResultWrapper.Error(Exception("Database is empty"))
+            } else {
+                ResultWrapper.Success(
+                    dao.getSquadPlayerByTeam(teamId).map {
+                        squadPlayerMapper.transform(it)
+                    }
+                )
+            }
         }
 }

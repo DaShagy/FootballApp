@@ -20,19 +20,19 @@ class TeamService(context: Context) {
         val service = api.createService(ApiSportsFootball.FootballTeams::class.java)
         val callResponse : Call<ApiSportsBaseResponse<List<TeamBaseResponse>>>
         when (queryType){
-            is TeamsRepositoryImpl.TeamQueryType.Country -> {
+            is TeamsRepositoryImpl.TeamQueryType.ByCountry -> {
                 callResponse = service.getTeamByCountry(queryType.country)
             }
-            is TeamsRepositoryImpl.TeamQueryType.Id -> {
+            is TeamsRepositoryImpl.TeamQueryType.ById -> {
                 callResponse = service.getTeamById(queryType.id)
             }
-            is TeamsRepositoryImpl.TeamQueryType.League -> {
+            is TeamsRepositoryImpl.TeamQueryType.ByLeague -> {
                 callResponse = service.getTeamByLeague(queryType.leagueId, queryType.season)
             }
-            is TeamsRepositoryImpl.TeamQueryType.Name -> {
+            is TeamsRepositoryImpl.TeamQueryType.ByName -> {
                 callResponse = service.getTeamByName(queryType.name)
             }
-            is TeamsRepositoryImpl.TeamQueryType.Search -> {
+            is TeamsRepositoryImpl.TeamQueryType.BySearch -> {
                callResponse = service.getTeamBySearch(queryType.search)
             }
         }
