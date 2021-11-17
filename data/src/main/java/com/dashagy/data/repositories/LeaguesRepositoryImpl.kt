@@ -15,7 +15,7 @@ class LeaguesRepositoryImpl(
     override suspend fun getLeaguesByCountry(
         country: String,
         fromRemote: Boolean,
-    ): ResultWrapper<List<League>> {
+    ): ResultWrapper<List<League>> =
         if (fromRemote){
             val leaguesResult = service.getLeaguesByCountry(country)
             if (leaguesResult is ResultWrapper.Success){
@@ -25,13 +25,16 @@ class LeaguesRepositoryImpl(
                     )
                 }
             }
-            return leaguesResult
+            leaguesResult
         } else {
-            return ResultWrapper.Success(
-                dao.getLeaguesByCountry(country).map {
-                    mapper.transform(it)
-                }
-            )
+            if (dao.getLeaguesByCountry(country).isEmpty()){
+                ResultWrapper.Error(Exception("Database is empty"))
+            } else {
+                ResultWrapper.Success(
+                    dao.getLeaguesByCountry(country).map {
+                        mapper.transform(it)
+                    }
+                )
+            }
         }
-    }
 }

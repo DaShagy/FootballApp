@@ -5,33 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.dashagy.domain.entities.League
 import com.dashagy.domain.entities.SquadPlayer
-import com.dashagy.domain.entities.Team
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.AppUtil
-import com.dashagy.footballapp.R
-import com.dashagy.footballapp.adapters.TeamsAdapter
-import com.dashagy.footballapp.databinding.FragmentTeamListBinding
+import com.dashagy.footballapp.adapters.SquadPlayersAdapter
+import com.dashagy.footballapp.databinding.FragmentPlayerListBinding
 import com.dashagy.footballapp.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TeamListFragment : Fragment() {
+class SquadPlayerListFragment : Fragment() {
 
-    private var _binding: FragmentTeamListBinding? = null
+    private var _binding: FragmentPlayerListBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var teamsAdapter : TeamsAdapter
+    private val playersAdapter = SquadPlayersAdapter()
 
     private val mainViewModel by viewModel<MainViewModel>()
 
-    private var leagueId: Int = 0
+    private var teamId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            leagueId = it.getInt("leagueId")
+            teamId = it.getInt("teamId")
         }
     }
 
@@ -39,22 +36,18 @@ class TeamListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentTeamListBinding.inflate(inflater, container, false)
+        _binding = FragmentPlayerListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        teamsAdapter = TeamsAdapter {
-            navigate(it)
-        }
+        val recyclerView = binding.playersRecyclerView
+        recyclerView.adapter = playersAdapter
 
-        val recyclerView = binding.teamsRecyclerView
-        recyclerView.adapter = teamsAdapter
-
-        mainViewModel.teams.observe(viewLifecycleOwner, ::updateUI)
-        mainViewModel.getTeamByLeague(leagueId, 2021)
+        mainViewModel.squadPlayers.observe(viewLifecycleOwner, ::updateUI)
+        mainViewModel.getPlayerByTeam(teamId)
     }
 
     override fun onDestroyView() {
@@ -62,7 +55,7 @@ class TeamListFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateUI(resultWrapper: ResultWrapper<List<Team>>) {
+    private fun updateUI(resultWrapper: ResultWrapper<List<SquadPlayer>>) {
         when (resultWrapper){
             is ResultWrapper.Error -> {
                 hideProgress()
@@ -81,32 +74,18 @@ class TeamListFragment : Fragment() {
         }
     }
 
-    private fun updateList(dataset: List<Team>){
-        teamsAdapter.updateDataset(dataset)
-        teamsAdapter.notifyDataSetChanged()
+    private fun updateList(dataset: List<SquadPlayer>){
+        playersAdapter.updateDataset(dataset)
+        playersAdapter.notifyDataSetChanged()
     }
 
     private fun showProgress() {
         binding.progress.visibility = View.VISIBLE
-        binding.teamsRecyclerView.visibility = View.GONE
+        binding.playersRecyclerView.visibility = View.GONE
     }
 
     private fun hideProgress() {
         binding.progress.visibility = View.GONE
-        binding.teamsRecyclerView.visibility = View.VISIBLE
-    }
-
-    private fun navigate(team: Team){
-        val bundle = Bundle()
-        bundle.putInt("teamId", team.id)
-        val squadPlayerListFragment = SquadPlayerListFragment()
-        squadPlayerListFragment.arguments = bundle
-
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, squadPlayerListFragment)
-            parentFragmentManager.popBackStack()
-            addToBackStack("squadPlayerFragment")
-            commit()
-        }
+        binding.playersRecyclerView.visibility = View.VISIBLE
     }
 }

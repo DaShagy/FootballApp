@@ -5,12 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.League
 import com.dashagy.domain.util.ResultWrapper
+import com.dashagy.footballapp.AppUtil
+import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.LeaguesAdapter
 import com.dashagy.footballapp.databinding.FragmentLeagueListBinding
-import com.dashagy.footballapp.viewmodels.LeaguesViewModel
+import com.dashagy.footballapp.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -19,9 +20,9 @@ class LeagueListFragment : Fragment() {
     private var _binding: FragmentLeagueListBinding? = null
     private val binding get() = _binding!!
 
-    private val leaguesAdapter = LeaguesAdapter()
+    private lateinit var leaguesAdapter : LeaguesAdapter
 
-    private val leaguesViewModel by viewModel<LeaguesViewModel>()
+    private val mainViewModel by viewModel<MainViewModel>()
 
     private lateinit var country: String
 
@@ -36,7 +37,7 @@ class LeagueListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentLeagueListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,11 +45,15 @@ class LeagueListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        leaguesAdapter = LeaguesAdapter {
+            navigate(it)
+        }
+
         val recyclerView = binding.leaguesRecyclerView
         recyclerView.adapter = leaguesAdapter
 
-        leaguesViewModel.leagues.observe(viewLifecycleOwner, ::updateUI)
-        leaguesViewModel.getLeaguesByCountry(country)
+        mainViewModel.leagues.observe(viewLifecycleOwner, ::updateUI)
+        mainViewModel.getLeaguesByCountry(country)
     }
 
     override fun onDestroyView() {
@@ -56,9 +61,22 @@ class LeagueListFragment : Fragment() {
         _binding = null
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("country", country)
+        super.onSaveInstanceState(outState)
+    }
+
     private fun updateUI(resultWrapper: ResultWrapper<List<League>>) {
         when (resultWrapper){
-            is ResultWrapper.Error -> TODO()
+            is ResultWrapper.Error ->{
+                hideProgress()
+                AppUtil.showMessage(
+                    requireActivity(),
+                    resultWrapper.exception.message ?:
+                    "Error desconocido"
+                )
+                parentFragmentManager.popBackStack()
+            }
             is ResultWrapper.Success -> {
                 hideProgress()
                 updateList(resultWrapper.data)
@@ -79,5 +97,19 @@ class LeagueListFragment : Fragment() {
     private fun hideProgress() {
         binding.progress.visibility = View.GONE
         binding.leaguesRecyclerView.visibility = View.VISIBLE
+    }
+
+    private fun navigate(league: League){
+        val bundle = Bundle()
+        bundle.putInt("leagueId", league.id)
+        val teamListFragment = TeamListFragment()
+        teamListFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.frameLayoutFragment, teamListFragment)
+            parentFragmentManager.popBackStack()
+            addToBackStack("teamFragment")
+            commit()
+        }
     }
 }

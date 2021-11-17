@@ -5,7 +5,6 @@ import com.dashagy.data.mapper.PlayerMapperLocal
 import com.dashagy.data.mapper.SquadPlayerMapperLocal
 import com.dashagy.data.service.services.PlayerService
 import com.dashagy.domain.entities.Player
-import com.dashagy.domain.entities.Season
 import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.repositories.PlayersRepository
 import com.dashagy.domain.util.ResultWrapper
@@ -30,11 +29,15 @@ class PlayersRepositoryImpl (
             }
             playerResult
         } else {
-            ResultWrapper.Success(
-                dao.getPlayerById(id).map{
-                    playerMapper.transform(it)
-                }
-            )
+            if (dao.getPlayerById(id).isEmpty()){
+                ResultWrapper.Error(Exception("Database is empty"))
+            } else {
+                ResultWrapper.Success(
+                    dao.getPlayerById(id).map {
+                        playerMapper.transform(it)
+                    }
+                )
+            }
         }
 
     override suspend fun getPlayerByTeam(
@@ -46,7 +49,9 @@ class PlayersRepositoryImpl (
             val playerResult = service.getPlayerByTeam(teamId, season)
             if (playerResult is ResultWrapper.Success){
                 val teams = playerResult.data.map { team -> playerMapper.transformToRepository(team) }
-                teams.map { dao.insertPlayer(it) }
+                teams.map {
+                    dao.insertPlayer(it)
+                }
             }
             playerResult
         } else {
@@ -69,6 +74,14 @@ class PlayersRepositoryImpl (
             }
             playerResult
         } else {
-            TODO("getSquadByTeam locale")
+            if (dao.getSquadPlayerByTeam(teamId).isEmpty()){
+                ResultWrapper.Error(Exception("Database is empty"))
+            } else {
+                ResultWrapper.Success(
+                    dao.getSquadPlayerByTeam(teamId).map {
+                        squadPlayerMapper.transform(it)
+                    }
+                )
+            }
         }
 }

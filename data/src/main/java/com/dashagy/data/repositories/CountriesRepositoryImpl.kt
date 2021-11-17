@@ -12,8 +12,8 @@ class CountriesRepositoryImpl(
     private val mapper: CountryMapperLocal,
     private val dao: CountryDao
 ) : CountriesRepository {
-    override suspend fun getAllCountries(fromRemote: Boolean): ResultWrapper<List<Country>> {
-        return if (fromRemote){
+    override suspend fun getAllCountries(fromRemote: Boolean): ResultWrapper<List<Country>> =
+        if (fromRemote){
             val countriesResult = service.getAllCountries()
             if (countriesResult is ResultWrapper.Success){
                 countriesResult.data.map {
@@ -22,11 +22,14 @@ class CountriesRepositoryImpl(
             }
             countriesResult
         } else {
-            ResultWrapper.Success(
-                dao.getAllCountries().map{
-                    mapper.transform(it)
-                }
-            )
+            if (dao.getAllCountries().isEmpty()) {
+                ResultWrapper.Error(Exception("Database is empty"))
+            } else {
+                ResultWrapper.Success(
+                    dao.getAllCountries().map {
+                        mapper.transform(it)
+                    }
+                )
+            }
         }
-    }
 }

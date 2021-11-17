@@ -17,8 +17,8 @@ class GetTeamUseCases(
     suspend fun byName(name: String, fromRemote: Boolean) =
         getTeamByNameUseCase(name, fromRemote)
 
-    suspend fun byLeague(leagueId: Int, season: Int, fromRemote: Boolean) =
-        getTeamByLeagueUseCase(leagueId, season, fromRemote)
+    /*suspend fun byLeague(leagueId: Int, season: Int, fromRemote: Boolean) =
+        getTeamByLeagueUseCase(leagueId, season, fromRemote)*/
 
     suspend fun byCountry(country: String, fromRemote: Boolean) =
         getTeamByCountryUseCase(country, fromRemote)

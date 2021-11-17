@@ -3,7 +3,7 @@ package com.dashagy.data.database.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "Squad Players")
 data class RoomSquadPlayer (
     @PrimaryKey
     val id: Int,

@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.dashagy.data.database.entities.RoomTeam
-import com.dashagy.data.database.entities.SeasonLeagueTeamRelation
+import com.dashagy.data.database.entities.RelationSeasonLeagueTeam
 
 @Dao
 interface TeamDao {
@@ -35,7 +35,7 @@ interface TeamDao {
     suspend fun getTeamByLeague(leagueId: Int, season: Int): List<RoomTeam>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSeasonLeagueTeamRelation(sltRelation: SeasonLeagueTeamRelation)
+    suspend fun insertSeasonLeagueTeamRelation(relation: RelationSeasonLeagueTeam)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTeam(team: RoomTeam)

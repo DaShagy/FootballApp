@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
     tableName = "SeasonLeagueTeams",
     primaryKeys = ["teamId", "leagueId", "season"]
 )
-data class SeasonLeagueTeamRelation(
+data class RelationSeasonLeagueTeam(
     val teamId: Int,
     val leagueId: Int,
     val season: Int
