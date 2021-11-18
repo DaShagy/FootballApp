@@ -23,10 +23,6 @@ class CountryListFragment : Fragment() {
 
     private val mainViewModel by viewModel<MainViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
