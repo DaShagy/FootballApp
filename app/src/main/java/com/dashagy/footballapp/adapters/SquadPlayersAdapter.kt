@@ -8,7 +8,9 @@ import coil.load
 import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.footballapp.databinding.RecyclerviewSquadPlayersBinding
 
-class SquadPlayersAdapter : RecyclerView.Adapter<SquadPlayersAdapter.SquadPlayerViewHolder>() {
+class SquadPlayersAdapter(
+    private val listener: (SquadPlayer) -> Unit
+) : RecyclerView.Adapter<SquadPlayersAdapter.SquadPlayerViewHolder>() {
 
     private var dataset = mutableListOf<SquadPlayer>()
     private lateinit var context: Context
@@ -18,8 +20,15 @@ class SquadPlayersAdapter : RecyclerView.Adapter<SquadPlayersAdapter.SquadPlayer
     }
 
     class SquadPlayerViewHolder(
-        val binding : RecyclerviewSquadPlayersBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+        val binding : RecyclerviewSquadPlayersBinding,
+        val onClickItem: (Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root){
+        init {
+            binding.root.setOnClickListener {
+                onClickItem(adapterPosition)
+            }
+        }
+    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -28,7 +37,9 @@ class SquadPlayersAdapter : RecyclerView.Adapter<SquadPlayersAdapter.SquadPlayer
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SquadPlayerViewHolder {
         val binding = RecyclerviewSquadPlayersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SquadPlayerViewHolder(binding)
+        return SquadPlayerViewHolder(binding){
+            listener(dataset[it])
+        }
     }
 
     override fun onBindViewHolder(holder: SquadPlayerViewHolder, position: Int) {
