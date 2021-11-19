@@ -1,44 +1,36 @@
 package com.dashagy.footballapp
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.dashagy.footballapp.databinding.ActivityMainBinding
 import com.dashagy.footballapp.fragments.CountryListFragment
-import com.dashagy.footballapp.fragments.LeagueListFragment
-import com.dashagy.footballapp.fragments.SquadPlayerListFragment
-import com.dashagy.footballapp.fragments.TeamListFragment
-import org.koin.ext.isInt
+import com.dashagy.footballapp.util.FragmentType
+import com.dashagy.footballapp.util.SharedPreferencesManager
 
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private lateinit var sharedPreferences: SharedPreferences
+
+    private val sharedPrefsManager by lazy { SharedPreferencesManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = getSharedPreferences(
-            "Session",
-            Context.MODE_PRIVATE
-        )
 
-        theme.applyStyle(sharedPreferences.getInt(AppUtil.KEY_THEME, AppUtil.DEFAULT_THEME_ID), true)
+        theme.applyStyle(sharedPrefsManager.getTheme(), true)
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
 
         val frameLayoutFragmentId = binding.frameLayoutFragment.id
 
         if (savedInstanceState == null) {
-            setFragmentToShow(CountryListFragment(), frameLayoutFragmentId)
-            restoreFragmentFromSharedPreferences(frameLayoutFragmentId)
+            setFragmentInLayout(CountryListFragment(), frameLayoutFragmentId)
+            getFragmentFromSharedPreferences(frameLayoutFragmentId)
         }
 
         setContentView(binding.root)
@@ -51,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.menuBtnChangeTheme){
-            changeTheme()
+            onClickChangeTheme()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -65,16 +57,14 @@ class MainActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-    private fun changeTheme(){
-        if (sharedPreferences.getInt(AppUtil.KEY_THEME, AppUtil.DEFAULT_THEME_ID) == AppUtil.DEFAULT_THEME_ID){
-            sharedPreferences.edit().putInt(AppUtil.KEY_THEME, AppUtil.ALT_THEME_ID).apply()
+    private fun onClickChangeTheme(){
+        if (sharedPrefsManager.getTheme() == SharedPreferencesManager.DEFAULT_THEME_ID){
+            sharedPrefsManager.setTheme(SharedPreferencesManager.ALT_THEME_ID)
         } else {
-            sharedPreferences.edit().putInt(AppUtil.KEY_THEME, AppUtil.DEFAULT_THEME_ID).apply()
+            sharedPrefsManager.setTheme(SharedPreferencesManager.DEFAULT_THEME_ID)
         }
 
-        val currentFragment = supportFragmentManager.fragments[0]
-
-        saveFragmentInSharedPreferences(currentFragment)
+        sharedPrefsManager.setFragment(supportFragmentManager.fragments[0])
 
         val intent = Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -83,69 +73,37 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun saveFragmentInSharedPreferences(currentFragment: Fragment) {
-        sharedPreferences.edit().putString(AppUtil.KEY_FRAGMENT_NAME, currentFragment::class.simpleName.toString()).apply()
-        when (currentFragment){
-            is CountryListFragment -> {
-                sharedPreferences.edit().remove(
-                    AppUtil.KEY_FRAGMENT_DATA
-                ).apply()
-            }
-            is LeagueListFragment -> {
-                sharedPreferences.edit().putString(
-                    AppUtil.KEY_FRAGMENT_DATA,
-                    currentFragment.arguments?.getString("country")
-                ).apply()
-            }
-            is TeamListFragment -> {
-                sharedPreferences.edit().putString(
-                    AppUtil.KEY_FRAGMENT_DATA,
-                    currentFragment.arguments?.getInt("leagueId").toString()
-                ).apply()
-            }
-            is SquadPlayerListFragment -> {
-                sharedPreferences.edit().putString(
-                    AppUtil.KEY_FRAGMENT_DATA,
-                    currentFragment.arguments?.getInt("teamId").toString()
-                ).apply()
-            }
-        }
-    }
+    private fun getFragmentFromSharedPreferences(frameLayoutFragmentId: Int){
 
-    private fun restoreFragmentFromSharedPreferences(frameLayoutFragmentId: Int){
-
-        val fragmentToRestore = sharedPreferences.getString(AppUtil.KEY_FRAGMENT_NAME, AppUtil.S_COUNTRY_LIST_FRAGMENT)!!
-        val fragmentToRestoreArgument = sharedPreferences.getString(AppUtil.KEY_FRAGMENT_DATA, "-1")!!
-
+        val fragmentToRestore = sharedPrefsManager.getFragment()
         val bundle = Bundle()
 
         when (fragmentToRestore){
-            AppUtil.S_LEAGUE_LIST_FRAGMENT -> {
-                bundle.putString("country", fragmentToRestoreArgument)
-                val leagueListFragment = LeagueListFragment()
-                leagueListFragment.arguments = bundle
-                setFragmentToShow(leagueListFragment, frameLayoutFragmentId)
+            is FragmentType.LeagueList -> {
+                bundle.putString("country", fragmentToRestore.country)
+                fragmentToRestore.frag.arguments = bundle
+                setFragmentInLayout(fragmentToRestore.frag, frameLayoutFragmentId)
             }
-            AppUtil.S_TEAM_LIST_FRAGMENT -> {
-                bundle.putInt("leagueId", fragmentToRestoreArgument.toInt())
-                val teamListFragment = TeamListFragment()
-                teamListFragment.arguments = bundle
-                setFragmentToShow(teamListFragment, frameLayoutFragmentId)
+            is FragmentType.TeamList -> {
+                bundle.putInt("leagueId", fragmentToRestore.leagueId)
+                fragmentToRestore.frag.arguments = bundle
+                setFragmentInLayout(fragmentToRestore.frag, frameLayoutFragmentId)
             }
-            AppUtil.S_SQUAD_PLAYER_LIST_FRAGMENT -> {
-                bundle.putInt("teamId", fragmentToRestoreArgument.toInt())
-                val squadPlayerListFragment = SquadPlayerListFragment()
-                squadPlayerListFragment.arguments = bundle
-                setFragmentToShow(squadPlayerListFragment, frameLayoutFragmentId)
+            is FragmentType.SquadPlayerList -> {
+                bundle.putInt("teamId", fragmentToRestore.teamId)
+                fragmentToRestore.frag.arguments = bundle
+                setFragmentInLayout(fragmentToRestore.frag, frameLayoutFragmentId)
             }
+            FragmentType.CountryList -> {}
         }
     }
 
-    private fun setFragmentToShow(fragment: Fragment, frameLayoutFragmentId: Int){
+    private fun setFragmentInLayout(fragment: Fragment, frameLayoutFragmentId: Int){
         supportFragmentManager.beginTransaction().apply {
             replace(frameLayoutFragmentId, fragment)
-            this.addToBackStack("squadPlayerFragment")
+            this.addToBackStack(null)
             commit()
         }
     }
+
 }

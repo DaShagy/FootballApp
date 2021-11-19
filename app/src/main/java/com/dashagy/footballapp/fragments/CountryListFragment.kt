@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.Country
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.R
-import com.dashagy.footballapp.AppUtil
+import com.dashagy.footballapp.util.AppUtil
 import com.dashagy.footballapp.adapters.CountriesAdapter
 import com.dashagy.footballapp.databinding.FragmentCountryListBinding
 import com.dashagy.footballapp.viewmodels.MainViewModel
