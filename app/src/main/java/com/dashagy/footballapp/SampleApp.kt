@@ -17,6 +17,7 @@ class SampleApp : Application() {
             modules(listOf(
                 AppKoinModules.viewModelsModule,
                 AppKoinModules.databaseModule,
+                AppKoinModules.sharedPreferencesModule,
                 KoinModules.mappersModule,
                 KoinModules.repositoriesModule,
                 KoinModules.useCasesModule,

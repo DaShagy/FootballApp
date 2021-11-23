@@ -43,31 +43,30 @@ class SharedPreferencesManager(context: Context) {
         return FragmentType.CountryList
     }
 
-    //TODO("Use string as argument")
-    fun setFragment(fragment: Fragment) {
-        editor.putString(KEY_FRAGMENT_NAME, fragment::class.simpleName.toString()).apply()
+    fun setFragment(fragment: FragmentType) {
+        editor.putString(KEY_FRAGMENT_NAME, fragment.frag::class.simpleName.toString()).apply()
         when (fragment){
-            is CountryListFragment -> {
+            is FragmentType.CountryList -> {
                 editor.remove(
                     KEY_FRAGMENT_DATA
                 ).apply()
             }
-            is LeagueListFragment -> {
+            is FragmentType.LeagueList -> {
                 editor.putString(
                     KEY_FRAGMENT_DATA,
-                    fragment.arguments?.getString("country")
+                    fragment.country
                 ).apply()
             }
-            is TeamListFragment -> {
+            is FragmentType.TeamList -> {
                 editor.putString(
                     KEY_FRAGMENT_DATA,
-                    fragment.arguments?.getInt("leagueId").toString()
+                    fragment.leagueId.toString()
                 ).apply()
             }
-            is SquadPlayerListFragment -> {
+            is FragmentType.SquadPlayerList -> {
                 editor.putString(
                     KEY_FRAGMENT_DATA,
-                    fragment.arguments?.getInt("teamId").toString()
+                    fragment.teamId.toString()
                 ).apply()
             }
         }

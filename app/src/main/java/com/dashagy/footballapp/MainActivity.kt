@@ -8,16 +8,19 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.dashagy.footballapp.databinding.ActivityMainBinding
 import com.dashagy.footballapp.fragments.CountryListFragment
+import com.dashagy.footballapp.fragments.LeagueListFragment
+import com.dashagy.footballapp.fragments.SquadPlayerListFragment
+import com.dashagy.footballapp.fragments.TeamListFragment
 import com.dashagy.footballapp.util.FragmentType
 import com.dashagy.footballapp.util.SharedPreferencesManager
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
-    // TODO("Use koin for di")
-    private val sharedPrefsManager by lazy { SharedPreferencesManager(this) }
+    private val sharedPrefsManager: SharedPreferencesManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +68,7 @@ class MainActivity : AppCompatActivity() {
             sharedPrefsManager.setTheme(SharedPreferencesManager.DEFAULT_THEME_ID)
         }
 
-        sharedPrefsManager.setFragment(supportFragmentManager.fragments[0])
+        sharedPrefsManager.setFragment(fragmentType(supportFragmentManager.fragments[0]))
 
         val intent = Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -104,6 +107,15 @@ class MainActivity : AppCompatActivity() {
             replace(frameLayoutFragmentId, fragment)
             this.addToBackStack(null)
             commit()
+        }
+    }
+
+    private fun fragmentType(fragment: Fragment) : FragmentType{
+        when (fragment){
+            is LeagueListFragment -> return FragmentType.LeagueList(fragment, fragment.requireArguments().getString("country")!!)
+            is TeamListFragment -> return FragmentType.TeamList(fragment, fragment.requireArguments().getInt("leagueId"))
+            is SquadPlayerListFragment -> return FragmentType.SquadPlayerList(fragment, fragment.requireArguments().getInt("teamId"))
+            else -> return FragmentType.CountryList
         }
     }
 
