@@ -43,6 +43,7 @@ class SharedPreferencesManager(context: Context) {
         return FragmentType.CountryList
     }
 
+    //TODO("Use string as argument")
     fun setFragment(fragment: Fragment) {
         editor.putString(KEY_FRAGMENT_NAME, fragment::class.simpleName.toString()).apply()
         when (fragment){

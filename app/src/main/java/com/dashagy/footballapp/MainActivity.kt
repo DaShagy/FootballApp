@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
+    // TODO("Use koin for di")
     private val sharedPrefsManager by lazy { SharedPreferencesManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                 fragmentToRestore.frag.arguments = bundle
                 setFragmentInLayout(fragmentToRestore.frag, frameLayoutFragmentId)
             }
-            FragmentType.CountryList -> {}
+            FragmentType.CountryList -> Unit
         }
     }
 
