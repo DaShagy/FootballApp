@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.dashagy.domain.entities.League
 import com.dashagy.domain.util.ResultWrapper
-import com.dashagy.footballapp.AppUtil
+import com.dashagy.footballapp.util.AppUtil
 import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.LeaguesAdapter
 import com.dashagy.footballapp.databinding.FragmentLeagueListBinding

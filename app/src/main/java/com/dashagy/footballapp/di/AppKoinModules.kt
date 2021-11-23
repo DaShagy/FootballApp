@@ -1,13 +1,13 @@
 package com.dashagy.footballapp.di
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import androidx.room.Room
 import com.dashagy.data.database.AppDatabase
 import com.dashagy.data.database.daos.CountryDao
 import com.dashagy.data.database.daos.LeagueDao
 import com.dashagy.data.database.daos.PlayerDao
 import com.dashagy.data.database.daos.TeamDao
+import com.dashagy.footballapp.util.SharedPreferencesManager
 import com.dashagy.footballapp.viewmodels.*
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -37,6 +37,10 @@ object AppKoinModules {
 
     val viewModelsModule = module {
         viewModel { MainViewModel(get(), get(), get(), get()) }
+    }
+
+    val sharedPreferencesModule = module {
+        single { SharedPreferencesManager(get()) }
     }
 }
 

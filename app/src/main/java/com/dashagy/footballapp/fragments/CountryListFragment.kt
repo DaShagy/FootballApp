@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.dashagy.domain.entities.Country
 import com.dashagy.domain.util.ResultWrapper
 import com.dashagy.footballapp.R
-import com.dashagy.footballapp.AppUtil
+import com.dashagy.footballapp.util.AppUtil
 import com.dashagy.footballapp.adapters.CountriesAdapter
 import com.dashagy.footballapp.databinding.FragmentCountryListBinding
 import com.dashagy.footballapp.viewmodels.MainViewModel
@@ -22,10 +22,6 @@ class CountryListFragment : Fragment() {
     private lateinit var countriesAdapter : CountriesAdapter
 
     private val mainViewModel by viewModel<MainViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -5,11 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.dashagy.domain.entities.League
-import com.dashagy.domain.entities.SquadPlayer
 import com.dashagy.domain.entities.Team
 import com.dashagy.domain.util.ResultWrapper
-import com.dashagy.footballapp.AppUtil
+import com.dashagy.footballapp.util.AppUtil
 import com.dashagy.footballapp.R
 import com.dashagy.footballapp.adapters.TeamsAdapter
 import com.dashagy.footballapp.databinding.FragmentTeamListBinding
